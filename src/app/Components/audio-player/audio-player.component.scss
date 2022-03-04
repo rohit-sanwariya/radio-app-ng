@@ -1,0 +1,36 @@
+.audio-player-container{
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ .audio-btn-group{
+   .btn{
+     margin: .5rem;
+   }
+ }
+ .audio-player-information{
+   display: flex;
+
+   div{
+     margin: .5rem;
+      #sliderMat{
+            // background-color:  #c2185b;
+            .mat-slider-thumb{
+              background-color:  #c2185b !important;
+            }
+      }
+   }
+   input[type="range" i] {
+     background-color: #333;
+     width: 100% !important;
+     height: 3px ;
+     cursor: grab ;
+   }
+
+
+ }
+
+
+}
+
+
+
