@@ -3,7 +3,7 @@ import { fromEvent, interval, takeUntil } from 'rxjs';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { TimeFormattingService } from 'src/app/Services/time-formatting.service';
 import { RadioList, SongList } from 'src/assets/Songs';
- 
+
 @Component({
   selector: 'app-audio-player',
   templateUrl: './audio-player.component.html',
@@ -59,7 +59,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.service.getSubject().subscribe((val)=>{
-      this.playSong()
+      this.playSong('fromList')
       console.log(val);
 
     })
@@ -81,6 +81,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   get ShowVolumeState(){
     return this.showVR
   }
+
   get range():number{
     this.service.getState().subscribe((state)=>{
       this.rangeVal = Math.floor(state.currentTime/state.duration*100)
@@ -114,14 +115,17 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
    this.service.getState().subscribe((state)=>{
         state.AudioType ? t =0:t=1
     })
+   console.log();
+
+
     return t
   }
-  playSong() {
-    this.service.play(this.audioElement.nativeElement)
-    this.service.getState().subscribe((state) => {
+  get getArtist(){
+return Object.entries(this.audioList[0][this.getIdx])[2][1]
+  }
+  playSong(playedFrom:string) {
+    this.service.play(this.audioElement.nativeElement,playedFrom)
 
-
-    });
 
   }
   playNext(){

@@ -14,10 +14,12 @@ export const RadioList = [
 export const SongList =[
   {
     title:'Narazagi',
-    src:'../../../assets/hour.mp3'
+    src:'../../../assets/hour.mp3',
+    artist:'Neha Kakkar'
   },
   {
     title:'I Feel So Lonely',
-    src:'../../../assets/Meri Jaan Meri Jaan - Bachchhan Paandey.mp3'
+    src:'../../../assets/Meri Jaan Meri Jaan - Bachchhan Paandey.mp3',
+    artist:'B Praak'
   },
 ]

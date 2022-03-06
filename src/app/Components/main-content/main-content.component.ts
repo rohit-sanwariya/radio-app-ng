@@ -28,11 +28,17 @@ export class MainContentComponent implements OnInit {
       this.service.setIdx(event)
 
    }
-   getIdx(){
+   get getIdx(){
       let a;
       this.service.getState().subscribe((state)=>{
-
+          a = state.currentIdx
       })
+      return a
+   }
+   get isPlaying(){
+     console.log(this.service.audioState.playing);
+
+     return this.service.audioState.playing
    }
 
 }

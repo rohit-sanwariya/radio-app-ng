@@ -34,13 +34,22 @@ export class AudioPlayerService implements OnInit {
     return this.subject.asObservable()
   }
   callPlay(){
-    this.subject.next(1)
+    this.subject.next(null)
   }
 
-  play(audio:any){
+  play(audio:any,playedFrom:string){
+    console.log(playedFrom,audio);
 
+
+   if(playedFrom=='fromPlayer'){
     this.audioState.playing ? audio.pause():audio.play();
     this.audioState.playing = !this.audioState.playing;
+   }
+   else{
+    this.audioState.playing = true
+     audio.play()
+
+   }
 
 
   }
@@ -71,7 +80,7 @@ export class AudioPlayerService implements OnInit {
   setAudioType(type:boolean){
     this.audioState.AudioType = type
 
-    
+
   }
   setIdx(idx:number){
     this.audioState.currentIdx = idx

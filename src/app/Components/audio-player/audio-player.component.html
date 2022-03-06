@@ -1,38 +1,43 @@
 <mat-card>
-  <h3 mat-card-title >{{audioList[audioType][getIdx].title}} </h3>
+  <h3 mat-card-title>{{audioList[audioType][getIdx].title}} <span class="artist-name"
+      *ngIf="audioType==0">{{getArtist}}</span> </h3>
   <div class="volume-container">
-    <div><img [ngClass]="isPlaying?'rotate':''"  src="../../../assets/img.jpg" alt=""></div>
-    <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="ShowVolumeState?'show-range':''" type="range" >
-    <mat-icon (click)="showVolumeRange()">{{volRange>0?'volume_up':'volume_off'}}</mat-icon>
+    <div><img [ngClass]="isPlaying?'rotate':''" src="../../../assets/img.jpg" alt=""></div>
+
+    <div class="right">
+
+      <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="ShowVolumeState?'show-range':''" type="range">
+      <mat-icon (click)="showVolumeRange()">{{volRange>0?'volume_up':'volume_off'}}</mat-icon>
+    </div>
   </div>
   <div class="audio-player-container">
-    <audio   #audioElement  id="audio-player"    [src]="audioList[audioType][getIdx].src" preload="metadata"    >
+    <audio #audioElement id="audio-player" [src]="audioList[audioType][getIdx].src" preload="metadata">
 
     </audio>
     <div class="audio-btn-group">
-      <button (click)="playPrevious()" mat-icon-button  class="btn audio-forward ">
-        <mat-icon  >skip_previous</mat-icon>
+      <button (click)="playPrevious()" mat-icon-button class="btn audio-forward ">
+        <mat-icon>skip_previous</mat-icon>
       </button>
-      <button mat-icon-button (click)="replay30()"  class="btn audio-forward ">
-        <mat-icon  >replay_30</mat-icon>
+      <button mat-icon-button (click)="replay30()" class="btn audio-forward ">
+        <mat-icon>replay_30</mat-icon>
       </button>
-    <button (click)="playSong()" mat-icon-button class="btn audio-play-pause">
-      <mat-icon  >{{isPlaying?'pause':'play_arrow'}}</mat-icon>
-    </button>
-    <button (click)="forward30()" mat-icon-button class="btn audio-previous">
-      <mat-icon  >forward_30</mat-icon>
-    </button>
-    <button (click)="playNext()" mat-icon-button class="btn audio-previous">
-      <mat-icon  >skip_next</mat-icon>
-    </button>
+      <button (click)="playSong('fromPlayer')" mat-icon-button class="btn audio-play-pause">
+        <mat-icon>{{isPlaying?'pause':'play_arrow'}}</mat-icon>
+      </button>
+      <button (click)="forward30()" mat-icon-button class="btn audio-previous">
+        <mat-icon>forward_30</mat-icon>
+      </button>
+      <button (click)="playNext()" mat-icon-button class="btn audio-previous">
+        <mat-icon>skip_next</mat-icon>
+      </button>
     </div>
     <div class="audio-player-information">
       <div class="current-time">{{timeLeft}}</div>
-     <div>
-  <input (input)="onSlide($event)" [value]="range" type="range" name="lengthAudio" id="lengthAudio">
-      <!-- <mat-slider id="sliderMat" colo color="primary" ></mat-slider> -->
-     </div>
-    <div class="total-time">{{timeRight}}</div>
+      <div>
+        <input (input)="onSlide($event)" [value]="range" type="range" name="lengthAudio" id="lengthAudio">
+        <!-- <mat-slider id="sliderMat" colo color="primary" ></mat-slider> -->
+      </div>
+      <div class="total-time">{{timeRight}}</div>
     </div>
   </div>
 
