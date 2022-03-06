@@ -1,36 +1,99 @@
-.audio-player-container{
- display: flex;
- flex-direction: column;
- align-items: center;
- .audio-btn-group{
-   .btn{
-     margin: .5rem;
-   }
- }
- .audio-player-information{
-   display: flex;
+.mat-card {
+  background-color: var(--primary-color);
+  width: 100%;
 
+  .volume-container{
    div{
-     margin: .5rem;
-      #sliderMat{
-            // background-color:  #c2185b;
-            .mat-slider-thumb{
-              background-color:  #c2185b !important;
-            }
+     background-color: #fff;
+
+
+
+     display: flex;
+    img{
+      width: 35px;
+      height: 35px;
+      border-radius: 100%;
+      object-fit: cover;
+      box-shadow: 1px 1px 3px 8px #fff;
+
+
+    }
+    img.rotate{
+      animation-iteration-count: infinite;
+      transition: all 1s ease-out;
+      animation-name: rotateImage;
+      animation-duration: 50s;
+      animation-iteration-count: infinite;
+    }
+   }
+    margin-right: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    .mat-icon{
+      color: #fff;
+      cursor: pointer;
+    }
+     input{
+       display: none;
+     }
+     input.show-range{
+       display: block;
+       margin-right: .5rem;
+      //  transform: rotate(270deg);
+      //  position: absolute;
+      //  top: -4.5rem;
+      //  right: -3.5rem;
+       height: 2px;
+
+     }
+  }
+  .audio-player-container {
+    display: flex;
+
+    align-items: center;
+    .audio-btn-group {
+      .btn {
+        margin: 0.5rem;
+        color: var(--secondary-color);
       }
-   }
-   input[type="range" i] {
-     background-color: #333;
-     width: 100% !important;
-     height: 3px ;
-     cursor: grab ;
-   }
+    }
+    .audio-player-information {
+      display: flex;
 
+      div {
+        margin: 0.5rem;
+        color: var(--secondary-color);
+      }
+      input[type="range" i] {
+        background-color: #333;
+        color: #333;
+        width: 100% !important;
+        height: 3px;
+        cursor: grab;
+      }
+    }
+  }
 
- }
+  .mat-card {
+    background-color: var(--primary-color);
+  }
 
+  .mat-card-title {
+    text-align: center;
+    color: #fff;
+    font-weight: 300;
+  }
+  .mat-card-avatar {
+    display: flex;
+    align-items: center;
 
+  }
 }
 
 
-
+@keyframes rotateImage {
+  from { transform: rotate(0deg);}
+  to { transform: rotate(3600deg);}
+}

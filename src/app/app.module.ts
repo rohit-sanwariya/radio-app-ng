@@ -6,12 +6,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AudioPlayerComponent } from './Components/audio-player/audio-player.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularMaterialModule } from './modules/angular-material/angular-material.module';
+import { NavbarComponent } from './Components/navbar/navbar.component';
+import { MainContentComponent } from './Components/main-content/main-content.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AudioPlayerComponent,
+    NavbarComponent,
+    MainContentComponent,
 
 
   ],

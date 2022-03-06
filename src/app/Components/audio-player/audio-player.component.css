@@ -1,0 +1,53 @@
+.audio-player-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.audio-player-container .audio-btn-group .btn {
+  margin: .5rem;
+}
+
+.audio-player-container .audio-player-information {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.audio-player-container .audio-player-information div {
+  margin: .5rem;
+}
+
+.audio-player-container .audio-player-information div #sliderMat .mat-slider-thumb {
+  background-color: #c2185b !important;
+}
+
+.audio-player-container .audio-player-information input[type="range" i] {
+  background-color: #333;
+  width: 100% !important;
+  height: 3px;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.mat-card-title {
+  text-align: center;
+  color: #ff1744;
+}
+
+.mat-card-avatar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+/*# sourceMappingURL=audio-player.component.css.map */

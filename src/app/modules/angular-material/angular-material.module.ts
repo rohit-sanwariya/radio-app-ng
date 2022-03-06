@@ -7,6 +7,8 @@ import {MatSliderModule} from '@angular/material/slider'
 import {MatCardModule} from '@angular/material/card'
 import {MatListModule} from '@angular/material/list'
 import {MatToolbarModule} from '@angular/material/toolbar'
+import {MatTabsModule} from '@angular/material/tabs'
+
 
 const MatComponents = [
 
@@ -17,7 +19,8 @@ const MatComponents = [
   MatSliderModule,
   MatInputModule,
   MatToolbarModule,
-  MatCardModule
+  MatCardModule,
+  MatTabsModule
 ]
 @NgModule({
 

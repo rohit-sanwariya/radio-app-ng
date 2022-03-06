@@ -1,0 +1,31 @@
+<main class="container">
+  <nav class="button-group">
+    <ul>
+      <li>
+        <button (click)="showMe(true)" class="btn">Music</button>
+      </li>
+      <li>
+        <button (click)="showMe(false)" class="btn">Radio</button>
+      </li>
+    </ul>
+  </nav>
+<div *ngIf="!showMusic">
+  <ul id="radioOnScreen"   class="songs-list">
+    <li *ngFor="let radio of radioChannels let idx=index">
+      <a (click)="selected(idx)" >
+        {{radio.title}}
+      </a>
+    </li>
+  </ul>
+</div>
+ <div *ngIf="showMusic">
+  <ul id="songsOnScreen"   >
+    <li *ngFor="let song of songChannels let idx = index" class="songs-list">
+      <mat-icon  >audiotrack</mat-icon>
+      <a (click)="selected(idx)" >
+        {{song.title}}
+      </a>
+    </li>
+  </ul>
+ </div>
+</main>
