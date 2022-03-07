@@ -47,6 +47,7 @@ export class AudioPlayerService implements OnInit {
    }
    else{
     this.audioState.playing = true
+    audio.autoplay = true
      audio.play()
 
    }
@@ -79,6 +80,7 @@ export class AudioPlayerService implements OnInit {
   }
   setAudioType(type:boolean){
     this.audioState.AudioType = type
+     
 
 
   }

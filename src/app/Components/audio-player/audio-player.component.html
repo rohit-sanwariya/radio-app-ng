@@ -2,8 +2,9 @@
   <h3 mat-card-title>{{audioList[audioType][getIdx].title}} <span class="artist-name"
       *ngIf="audioType==0">{{getArtist}}</span> </h3>
   <div class="volume-container">
-    <div><img [ngClass]="isPlaying?'rotate':''" src="../../../assets/img.jpg" alt=""></div>
-
+    <div>
+      <img [ngClass]="isPlaying?'rotate':''" src="../../../assets/img.jpg" alt="">
+    </div>
     <div class="right">
 
       <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="ShowVolumeState?'show-range':''" type="range">
