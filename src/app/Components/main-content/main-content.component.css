@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@200;300;400;500;700&display=swap");
+.container {
+  width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container nav {
+  width: 100;
+  margin: 1rem 0;
+  height: 5rem;
+  background-color: var(--primary-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 0;
+}
+
+.container nav ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.container nav ul li {
+  list-style: none;
+  margin: 0 1rem;
+}
+
+.container nav ul li button {
+  color: #fff;
+  text-decoration: none;
+  background-color: var(--secondary-color);
+  outline: none;
+  border: none;
+  padding: .5rem 1rem;
+  letter-spacing: 2px;
+  border-radius: 5px;
+}
+
+.container nav ul li :hover {
+  background-color: #fff;
+  color: var(--primary-color);
+  border-radius: 0;
+}
+
+.container nav ul li.active {
+  background-color: #fff;
+  color: var(--primary-color);
+  border-radius: 0;
+}
+
+.container div {
+  min-height: calc(100vh - 17rem);
+}
+
+.container div ul {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(400px, 1fr))[auto-fill];
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  width: 100%;
+  gap: 1rem;
+  justify-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container div ul li {
+  list-style: none;
+  -webkit-box-shadow: 1px 1px 8px 3px var(--primary-color);
+          box-shadow: 1px 1px 8px 3px var(--primary-color);
+  margin: 1rem;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 1rem .5rem;
+  background-color: #fff;
+  margin: 1rem;
+}
+
+.container div ul li .mat-icon {
+  padding: 0;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.container div ul li a {
+  color: #fff;
+  text-decoration: none;
+  color: var(--primary-color);
+  outline: none;
+  border: none;
+  padding: .5rem 1rem;
+  letter-spacing: 2px;
+  font-weight: 500;
+  font-family: 'Smooch Sans', sans-serif;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.container div ul :hover {
+  background-color: var(--primary-color);
+  border-radius: 0;
+  color: #fff;
+}
+
+.container div ul :hover a {
+  color: #fff;
+}
+
+.container div ul :hover .mat-icon {
+  color: #fff;
+}
+
+li.active {
+  background-color: var(--primary-color);
+}
+/*# sourceMappingURL=main-content.component.css.map */

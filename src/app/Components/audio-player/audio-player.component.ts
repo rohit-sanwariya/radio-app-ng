@@ -60,7 +60,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.service.getSubject().subscribe((val)=>{
       this.playSong('fromList')
-      console.log(val);
+      
 
     })
   }
@@ -121,6 +121,8 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
     return t
   }
   get getArtist(){
+    console.log( Object.entries(this.audioList[0][this.getIdx])[2][1]);
+
 return Object.entries(this.audioList[0][this.getIdx])[2][1]
   }
   playSong(playedFrom:string) {

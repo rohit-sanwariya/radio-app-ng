@@ -1,16 +1,15 @@
-<mat-card>
-  <h3 mat-card-title>{{audioList[audioType][getIdx].title}} <span class="artist-name"
-      *ngIf="audioType==0">{{getArtist}}</span> </h3>
-  <div class="volume-container">
-    <div>
+<div class="container">
+  <div class="artist-information">
+    <div class="artist-information-img-container">
       <img [ngClass]="isPlaying?'rotate':''" src="../../../assets/img.jpg" alt="">
     </div>
-    <div class="right">
-
-      <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="ShowVolumeState?'show-range':''" type="range">
-      <mat-icon (click)="showVolumeRange()">{{volRange>0?'volume_up':'volume_off'}}</mat-icon>
+    <div class="artist-information-content">
+      <h3 class="song-name" [ngStyle]="{'font-size':audioList[audioType][getIdx].title.length>20?'1rem':'1.2rem'}"     >{{audioList[audioType][getIdx].title}} </h3>
+      <span class="artist-name"   *ngIf="audioType==0" [ngStyle]="{'font-size':getArtist.length>20?'1rem':'1.2rem'}"                   >{{getArtist}}</span>
     </div>
   </div>
+
+
   <div class="audio-player-container">
     <audio #audioElement id="audio-player" [src]="audioList[audioType][getIdx].src" preload="metadata">
 
@@ -41,6 +40,17 @@
       <div class="total-time">{{timeRight}}</div>
     </div>
   </div>
+  <div class="volume-container">
+
+    <div class="right">
 
 
-</mat-card>
+
+      <mat-icon (click)="showVolumeRange()">{{volRange>0?'volume_up':'volume_off'}}</mat-icon>
+      <div class="range-container" [ngClass]="ShowVolumeState?'show-range':''">
+        <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="ShowVolumeState?'show-range':''" type="range">
+      </div>
+    </div>
+  </div>
+
+</div>
