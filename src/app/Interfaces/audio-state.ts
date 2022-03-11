@@ -6,7 +6,8 @@ export interface AudioState {
   timeLeft:string,
   timeRight:string,
   currentIdx:number,
-  AudioType:boolean
+  AudioType:boolean,
+  artist:string
 
 }
 

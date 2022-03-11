@@ -23,7 +23,8 @@
     <li *ngFor="let song of songChannels let idx = index" [ngClass]="idx==getIdx?'active':''" class="songs-list">
       <mat-icon  >audiotrack</mat-icon>
       <a (click)="selected(idx)" >
-        {{song.title}}
+        {{song.title}} by
+        {{song.artist}}
       </a>
     </li>
   </ul>

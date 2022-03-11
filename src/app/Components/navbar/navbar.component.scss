@@ -3,11 +3,23 @@
   display: flex;
   font-family: 'Work Sans', sans-serif;
   width: 100vw;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: var(--primary-color);
   height: 5rem;
+ul.right-nav{
+  display: flex;
+  input{
+    height: 1.8rem;
+    margin: 0 1rem;
+    border-radius: 1rem;
+    &:focus{
+      outline: none;
+      border-bottom: 5px solid white;
+    }
 
+  }
+}
  ul{
 
    li{

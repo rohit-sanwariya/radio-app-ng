@@ -1,17 +1,17 @@
 <div class="container">
   <div class="artist-information">
-    <div class="artist-information-img-container">
-      <img [ngClass]="isPlaying?'rotate':''" src="../../../assets/img.jpg" alt="">
+    <div class="artist-information-img-container"  >
+      <img [ngClass]="(state$|async)?.playing?'rotate':''" src="../../../assets/img.jpg" alt="">
     </div>
     <div class="artist-information-content">
       <h3 class="song-name" [ngStyle]="{'font-size':audioList[audioType][getIdx].title.length>20?'1rem':'1.2rem'}"     >{{audioList[audioType][getIdx].title}} </h3>
-      <span class="artist-name"   *ngIf="audioType==0" [ngStyle]="{'font-size':getArtist.length>20?'1rem':'1.2rem'}"                   >{{getArtist}}</span>
+      <span class="artist-name"   *ngIf="(state$|async)?.AudioType ==true"                  >{{(state$|async)?.artist}}</span>
     </div>
   </div>
 
 
   <div class="audio-player-container">
-    <audio #audioElement id="audio-player" [src]="audioList[audioType][getIdx].src" preload="metadata" >
+    <audio #audioElement id="audio-player" src="https://open.spotify.com/embed/track/2ozqIKiasvsIDm4YQHUACn?utm_source=generator" autoplay="true" preload="metadata" >
 
     </audio>
     <div class="audio-btn-group">
@@ -22,7 +22,7 @@
         <mat-icon>replay_30</mat-icon>
       </button>
       <button (click)="playSong('fromPlayer')" mat-icon-button class="btn audio-play-pause">
-        <mat-icon>{{isPlaying?'pause':'play_arrow'}}</mat-icon>
+        <mat-icon>{{(state$|async)?.playing ?'pause':'play_arrow'}}</mat-icon>
       </button>
       <button (click)="forward30()" mat-icon-button class="btn audio-previous">
         <mat-icon>forward_30</mat-icon>
@@ -32,12 +32,12 @@
       </button>
     </div>
     <div class="audio-player-information">
-      <div class="current-time">{{timeLeft}}</div>
+      <div class="current-time">{{(state$|async)?.timeLeft}}</div>
       <div>
         <input (input)="onSlide($event)" [value]="range" type="range" name="lengthAudio" id="lengthAudio">
         <!-- <mat-slider id="sliderMat" colo color="primary" ></mat-slider> -->
       </div>
-      <div class="total-time">{{timeRight}}</div>
+      <div class="total-time">{{(state$|async)?.timeRight}}</div>
     </div>
   </div>
   <div class="volume-container">
@@ -47,8 +47,8 @@
 
 
       <mat-icon (click)="showVolumeRange()">{{volRange>0?'volume_up':'volume_off'}}</mat-icon>
-      <div class="range-container" [ngClass]="ShowVolumeState?'show-range':''">
-        <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="ShowVolumeState?'show-range':''" type="range">
+      <div class="range-container" [ngClass]="showVR?'show-range':''">
+        <input [value]="volRange" (input)="onVolSroll($event)" [ngClass]="showVR?'show-range':''" type="range">
       </div>
     </div>
   </div>

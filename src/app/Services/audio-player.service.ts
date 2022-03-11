@@ -1,6 +1,6 @@
 import { ElementRef, Injectable, OnInit } from '@angular/core';
 
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { RadioList, SongList } from 'src/assets/Songs';
 import { AudioState } from '../Interfaces/audio-state';
 import { TimeFormattingService } from './time-formatting.service';
@@ -11,6 +11,7 @@ import { TimeFormattingService } from './time-formatting.service';
 
 export class AudioPlayerService implements OnInit {
   private  subject = new Subject()
+  private songListSubject = new BehaviorSubject([])
   radioList = RadioList
   songList = SongList
   audioState:AudioState = {
@@ -21,7 +22,8 @@ export class AudioPlayerService implements OnInit {
     timeLeft:'00:00',
     timeRight:'00:00',
     currentIdx:0,
-    AudioType:true
+    AudioType:true,
+    artist:''
   }
   constructor(private timeService:TimeFormattingService) {
 
@@ -30,6 +32,14 @@ export class AudioPlayerService implements OnInit {
   ngOnInit(): void {
 
   }
+
+  setSongList(songs:any){
+    this.songListSubject.next(songs)
+  }
+  getSongList(){
+    return this.songListSubject.asObservable()
+  }
+
   getSubject(){
     return this.subject.asObservable()
   }
@@ -80,9 +90,9 @@ export class AudioPlayerService implements OnInit {
   }
   setAudioType(type:boolean){
     this.audioState.AudioType = type
-     
-
-
+  }
+  setArtist(artist:string){
+    this.audioState.artist = artist
   }
   setIdx(idx:number){
     this.audioState.currentIdx = idx
