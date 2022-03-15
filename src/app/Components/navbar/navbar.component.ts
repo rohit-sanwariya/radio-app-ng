@@ -34,7 +34,9 @@ user-read-private%20
 user-library-read%20
 user-library-modify%20
 user-read-playback-state%20
-user-modify-playback-state`
+user-modify-playback-state%20
+user-read-recently-played%20
+user-library-read`
 
   constructor(private service: LoginService,private spotifyService:SpotifyService, private audioService: AudioPlayerService) {
     const url = new URLSearchParams(window.location.search)
@@ -61,7 +63,6 @@ user-modify-playback-state`
 
   ngOnInit(): void {
     this.service.getAuthSubject().pipe(distinctUntilChanged()).subscribe((auth) => {
-
       if (auth.accessToken !== '') {
         this.spotify.setAccessToken(auth.accessToken)
         console.log('.....',this.spotify);
@@ -76,14 +77,14 @@ user-modify-playback-state`
     })
     this.search.valueChanges.subscribe((searchTerm) => {
 
-
-
+      this.spotifyService.updateContentOnSearch(searchTerm)
       if (searchTerm === '') { this.searchResults = []; return; }
       if (!this.authObject) return
 
 
+
       this.spotify.searchTracks(searchTerm).then((res) => {
-        this.searchResults = res.body.tracks?.items.map(track => {
+      this.searchResults = res.body.tracks?.items.map(track => {
 
 
 

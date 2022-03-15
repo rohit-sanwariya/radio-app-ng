@@ -1,4 +1,4 @@
-import { ElementRef, Injectable, OnInit } from '@angular/core';
+import { AfterViewInit, ElementRef, Injectable, OnInit, ViewChild } from '@angular/core';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { RadioList, SongList } from 'src/assets/Songs';
@@ -9,12 +9,14 @@ import { TimeFormattingService } from './time-formatting.service';
   providedIn: 'root'
 })
 
-export class AudioPlayerService implements OnInit {
+export class AudioPlayerService implements OnInit,AfterViewInit {
+  audio = new Audio()
   private  subject = new Subject()
   private songListSubject = new BehaviorSubject([])
   radioList = RadioList
   songList = SongList
   audioState:AudioState = {
+    title:'',
     playing:false,
     duration:0,
     rangeValue:0,
@@ -23,16 +25,33 @@ export class AudioPlayerService implements OnInit {
     timeRight:'00:00',
     currentIdx:0,
     AudioType:true,
-    artist:''
+    artist:'',
+    src:''
   }
+
+
+
+
   constructor(private timeService:TimeFormattingService) {
 
-
    }
+  ngAfterViewInit(): void {
+
+
+  }
   ngOnInit(): void {
 
   }
 
+
+  setAudio(track:any){
+    this.audioState.src = track.previewURL
+    this.audioState.title = track.name
+    this.audioState.duration = track.duration
+    this.audioState.artist = track.artistName
+    this.callPlay()
+
+  }
   setSongList(songs:any){
     this.songListSubject.next(songs)
   }
@@ -46,11 +65,12 @@ export class AudioPlayerService implements OnInit {
   callPlay(){
     this.subject.next(null)
   }
+  playSpotify(){
+
+  }
 
   play(audio:any,playedFrom:string){
     console.log(playedFrom,audio);
-
-
    if(playedFrom=='fromPlayer'){
     this.audioState.playing ? audio.pause():audio.play();
     this.audioState.playing = !this.audioState.playing;
@@ -59,10 +79,7 @@ export class AudioPlayerService implements OnInit {
     this.audioState.playing = true
     audio.autoplay = true
      audio.play()
-
    }
-
-
   }
 
   playNext(audio:any){

@@ -1,4 +1,5 @@
 export interface AudioState {
+  title:string,
   playing:boolean,
   duration:number,
   rangeValue:number,
@@ -7,7 +8,8 @@ export interface AudioState {
   timeRight:string,
   currentIdx:number,
   AudioType:boolean,
-  artist:string
+  artist:string,
+  src:string,
 
 }
 
