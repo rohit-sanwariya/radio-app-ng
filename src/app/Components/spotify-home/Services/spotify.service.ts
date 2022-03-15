@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { LoginService } from 'src/app/Services/login.service';
 import SpofityWebApi from 'spotify-web-api-node'
 import { Playlist, User } from '../Interfaces/user';
@@ -6,13 +6,14 @@ import { from, map, Observable, of, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SpotifyService implements OnInit {
+export class SpotifyService {
   user: User = {
     username: '',
     displayName: ''
   }
   playlists!: Playlist[]
   subject = new Subject()
+  obserable!:Observable<any>
   spotify = new SpofityWebApi({
     clientId: '792083897a9e487ca8186284678cf0b3',
   })
@@ -30,12 +31,6 @@ export class SpotifyService implements OnInit {
       this.user.displayName = data.body.display_name!
 
 
-
-    })
-  }
-  ngOnInit(): void {
-    this.subject.subscribe((val)=>{
-      console.log(val);
 
     })
   }
@@ -61,11 +56,22 @@ export class SpotifyService implements OnInit {
     return ob
   }
   setPlaylistTracks(playlistId:string){
-    from(this.spotify.getPlaylistTracks(playlistId)).pipe(map(data=>{
+     from(this.spotify.getPlaylistTracks(playlistId,{limit:20})).pipe(map(data=>{
       const mapper = data.body.items.map((item)=>{
+
+      const smallestImg = item.track.album.images.reduce((img:any,small:any)=>{
+          if(img && img.height<small.height){
+            return img
+          }
+          return small
+        },item.track.album.images[0])
+        console.log(smallestImg);
+
+
         return {
           albumId:item.track.album,
-          albumImg:item.track.album.images,
+          albumName:item.track.album.name,
+          albumImg:smallestImg.url,
           albumURI:item.track.album.uri,
           artistName:item.track.artists[0].name,
           artistId:item.track.artists[0].name,
@@ -73,18 +79,21 @@ export class SpotifyService implements OnInit {
           id:item.track.id,
           duration:item.track.duration_ms,
           uri:item.track.uri,
-          previewURL :item.track.preview_url
+          previewURL :item.track.preview_url,
+          name:item.track.name,
+
 
         }
         })
-        console.log(mapper);
-      
+
+        this.subject.next(mapper)
 
         return mapper
 
-    }))
+    })).subscribe()
   }
   getPlaylist(){
+
     return this.subject.asObservable()
   }
 

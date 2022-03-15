@@ -1,1 +1,15 @@
-<p>spotify-content works!</p>
+<section class="card-list">
+  <article class="card" *ngFor="let track of currentContent$|async">
+
+    <header class="card-header"> {{track.name}}</header>
+
+    <div class="img-container" >
+        <img mat-card-image [src]="track.albumImg" alt="">
+
+    </div>
+    <footer class="card-footer">
+      <p class="footer-text">{{track.artistName}} from {{track.albumName}}</p>
+    </footer>
+
+  </article>
+</section>

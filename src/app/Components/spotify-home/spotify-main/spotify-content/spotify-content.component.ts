@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { SpotifyService } from '../../Services/spotify.service';
 
 @Component({
@@ -7,13 +8,15 @@ import { SpotifyService } from '../../Services/spotify.service';
   styleUrls: ['./spotify-content.component.scss']
 })
 export class SpotifyContentComponent implements OnInit {
-  currentContent = []
+  currentContent$!:Observable<any>
 
   constructor(private spotifyService:SpotifyService) { }
 
   ngOnInit(): void {
-  this.spotifyService.getPlaylist().subscribe((val)=>{
-    console.log(val,"blank");
+  this.currentContent$ = this.spotifyService.getPlaylist()
+  this.currentContent$.subscribe((val)=>{
+    console.log(val.albumImg);
+
   })
   }
 
