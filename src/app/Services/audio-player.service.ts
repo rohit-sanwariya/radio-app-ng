@@ -45,11 +45,16 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
 
 
   setAudio(track:any){
+    console.log(track.previewURL);
+
     this.audioState.src = track.previewURL
     this.audioState.title = track.name
     this.audioState.duration = track.duration
     this.audioState.artist = track.artistName
-    this.callPlay()
+   if(this.audioState.src === '' || this.audioState.src === null ){
+      return
+   }
+   this.callPlay()
 
   }
   setSongList(songs:any){

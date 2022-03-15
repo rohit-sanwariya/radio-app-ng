@@ -139,7 +139,7 @@
 
 
     div.right{
-      justify-content: static;
+       position: relative;
       .range-container {
 
         height: 8px;
@@ -151,22 +151,15 @@
       .range-container.show-range {
         position: absolute;
         transform: rotate(270deg);
-
-
-        top: -83px;
-        right: -19px;
-
-
-
+        top: -126px;
+        right: -23px;
         input::-webkit-slider-thumb{
-
           background: #fff;
         }
         input.show-range {
           display: block;
           outline: none;
           height: 3px;
-
           &:focus{
             outline: none;
           }
@@ -187,7 +180,7 @@
         color: #fff;
         cursor: pointer;
         position: absolute;
-        top: 10px;
+        top: -28px;
         right: 41px;
       }
       input {

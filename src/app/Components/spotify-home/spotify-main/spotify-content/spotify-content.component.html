@@ -8,6 +8,7 @@
 
     </div>
     <footer class="card-footer">
+      <p class="alert-text" *ngIf="!track.previewURL">No Preview Available</p>
       <p class="footer-text">{{track.artistName}} from {{track.albumName}}</p>
     </footer>
 

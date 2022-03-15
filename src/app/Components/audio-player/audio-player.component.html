@@ -5,11 +5,11 @@
     </div>
     <div class="artist-information-content">
       <h3 class="song-name" [ngStyle]="{'font-size':audioList[audioType][getIdx].title.length>20?'1rem':'1.2rem'}"     >{{(state$|async)?.title}} </h3>
-      <span class="artist-name"   *ngIf="(state$|async)?.AudioType ==true"                  >{{(state$|async)?.artist}}</span>
+      <span class="artist-name"   *ngIf="(state$|async)?.AudioType ==true" >{{(state$|async)?.artist}}</span>
     </div>
   </div>
 
-
+ 
   <div class="audio-player-container">
     <audio #audioElement id="audio-player" [src]="(state$|async)?.src" autoplay="true" preload="metadata" >
 

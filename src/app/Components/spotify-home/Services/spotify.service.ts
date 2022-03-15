@@ -36,6 +36,7 @@ export class SpotifyService implements OnInit {
     console.log(search);
     if(search===''){
       console.log('blank');
+      this.getRecentlyPlayedTracks()
       return
 
     }
