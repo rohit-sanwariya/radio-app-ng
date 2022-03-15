@@ -6,6 +6,7 @@ section.card-list{
   grid-template-columns: 1fr 1fr 1fr;
 
   article.card{
+    cursor: pointer;
     box-shadow: 1px 3px 11px 5px var(--primary-color);
     // background-image:  linear-gradient(to right,rgb(255, 255, 255),#d81570 ) ;
     display: flex;

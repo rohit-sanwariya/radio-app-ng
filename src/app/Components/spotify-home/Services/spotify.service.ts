@@ -7,31 +7,25 @@ import { from, map, Observable, of, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SpotifyService {
+   audio = new Audio()
   user: User = {
     username: '',
     displayName: ''
   }
   playlists!: Playlist[]
   subject = new Subject()
-  obserable!:Observable<any>
+
   spotify = new SpofityWebApi({
     clientId: '792083897a9e487ca8186284678cf0b3',
   })
   constructor(private loginService: LoginService) {
 
     this.loginService.getAuthSubject().subscribe((auth) => {
-
-
       this.spotify.setAccessToken(localStorage.getItem('token')!)
     })
     this.spotify.getMe().then((data) => {
-
-
       this.user.username = data.body.id
       this.user.displayName = data.body.display_name!
-
-
-
     })
   }
   getUser() {
@@ -41,18 +35,11 @@ export class SpotifyService {
   }
 
   fetchPlaylist(): Observable<any> {
-
     const ob =from(this.spotify.getUserPlaylists('21mxrckvt5fvsgubpbz3kcpuq')).pipe(map((data, index) => data.body.items),map((items,index)=>{
-
-      const mapper = items.map((item)=>{ return {name:item.name,description:item.description,id:item.id}
+    const mapper = items.map((item)=>{ return {name:item.name,description:item.description,id:item.id}
       })
-
-
       return mapper
-
-    }))
-
-
+        }))
     return ob
   }
   setPlaylistTracks(playlistId:string){
@@ -91,6 +78,14 @@ export class SpotifyService {
         return mapper
 
     })).subscribe()
+  }
+  setCurrentTrack(track:any){
+    console.log(track);
+    this.audio.src = track.previewURL
+
+
+    this.audio.play()
+
   }
   getPlaylist(){
 

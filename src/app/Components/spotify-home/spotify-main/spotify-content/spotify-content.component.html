@@ -1,5 +1,5 @@
 <section class="card-list">
-  <article class="card" *ngFor="let track of currentContent$|async">
+  <article class="card" *ngFor="let track of currentContent$|async" (click)=setCurrent(track)>
 
     <header class="card-header"> {{track.name}}</header>
 

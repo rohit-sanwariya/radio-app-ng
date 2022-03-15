@@ -19,5 +19,8 @@ export class SpotifyContentComponent implements OnInit {
 
   })
   }
+  setCurrent(track:any){
+    this.spotifyService.setCurrentTrack(track)
+  }
 
 }
