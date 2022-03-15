@@ -1,5 +1,6 @@
 import { Component, Renderer2, ElementRef, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { fromEvent, interval, Observable, takeUntil } from 'rxjs';
+import SpotifyWebApi from 'spotify-web-api-node';
 import { AudioState } from 'src/app/Interfaces/audio-state';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { TimeFormattingService } from 'src/app/Services/time-formatting.service';
@@ -69,7 +70,7 @@ this.state$ = this.service.getState()
     this.service.getSongList().subscribe((songs:any)=>{
      if(songs.length>0){
       this.audioList[0] = songs
-      console.log(songs[0].src);
+     
 
      }
     })

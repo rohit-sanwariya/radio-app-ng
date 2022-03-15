@@ -1,0 +1,7 @@
+<nav class="sidebar">
+  <ul  >
+      <li *ngFor="let playlist of playlists$|async">
+        <a href="#" (click)="setCurrentPlaylist($event,playlist)">{{playlist.name}}</a>
+      </li>
+  </ul>
+</nav>

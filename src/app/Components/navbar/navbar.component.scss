@@ -9,6 +9,11 @@
   height: 5rem;
 ul.right-nav{
   display: flex;
+  align-items: center;
+  .spotify-display-name{
+    color: #fff;
+    letter-spacing: 3px;
+  }
   input{
     height: 1.8rem;
     margin: 0 1rem;

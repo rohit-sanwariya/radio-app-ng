@@ -4,19 +4,25 @@
       <li>
 
         <a href="#">
-           Music Player
+           {{showSpotifyIcon?'Music Player':"Spotify Player"}}
         </a>
-        <mat-icon>radio</mat-icon>
+        <mat-icon>{{showSpotifyIcon?'radio':"music_note"}}</mat-icon>
       </li>
     </ul>
     <ul class="right-nav">
-      <li>
-
-
+      <li *ngIf="showSpotifyIcon">
         <a [href]="AUTH_URI">
           <i class="fa-brands fa-spotify"></i>
         </a>
       </li>
+      <li class="spotify-display-name" *ngIf="!showSpotifyIcon  ">
+
+             {{(user$|async)?.displayName}}
+
+
+
+      </li>
+
       <li>
         <input type="text"  [formControl]="search">
       </li>
