@@ -7,6 +7,7 @@
   align-items: center;
   background-color: var(--primary-color);
   height: 5rem;
+  margin-right: 2rem;
 ul.right-nav{
   display: flex;
   align-items: center;
@@ -15,12 +16,20 @@ ul.right-nav{
     letter-spacing: 3px;
   }
   input{
+
     height: 1.8rem;
-    margin: 0 1rem;
+    margin: 0 2rem;
     border-radius: 1rem;
+    font-size: 1.2rem;
+    padding: .5rem;
+    font-family: 'Smooch Sans', sans-serif;
+    font-weight: 500;
+    width: 15rem;
+
     &:focus{
       outline: none;
-      border-bottom: 5px solid white;
+      box-shadow:  5px 9px -2px #fff;
+
     }
 
   }

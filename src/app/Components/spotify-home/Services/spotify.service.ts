@@ -39,11 +39,10 @@ export class SpotifyService implements OnInit {
 
   updateContentOnSearch(search:string){
     const expiresAt = localStorage.getItem('expiresAt')
-    console.log('...............',localStorage.getItem('refreshToken')!);
-    this.loginService.getSubject().subscribe(val=>{
-      console.log(val);
+    console.log(this.authObject.refreshToken);
 
-    })
+
+
     if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
       this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
 
@@ -117,7 +116,7 @@ export class SpotifyService implements OnInit {
   getRecentlyPlayedTracks(){
     console.log('recently',localStorage.getItem('refreshToken')!);
     if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
-      console.log('...............',localStorage.getItem('refreshToken')!);
+
       this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
 
   }
