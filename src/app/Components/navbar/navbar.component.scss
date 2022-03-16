@@ -25,10 +25,12 @@ ul.right-nav{
     font-family: 'Smooch Sans', sans-serif;
     font-weight: 500;
     width: 15rem;
+    color:var(--primary-color);
 
     &:focus{
       outline: none;
-      box-shadow:  5px 9px -2px #fff;
+      box-shadow:  1px 3px 3px #fff;
+      letter-spacing: 3px;
 
     }
 

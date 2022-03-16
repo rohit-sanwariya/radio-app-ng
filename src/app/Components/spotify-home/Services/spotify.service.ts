@@ -2,9 +2,11 @@ import { Injectable, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/Services/login.service';
 import SpofityWebApi from 'spotify-web-api-node'
 import { Playlist, User } from '../Interfaces/user';
-import { from, map, Observable, of, Subject } from 'rxjs';
+import { catchError, from, map, Observable, of, Subject } from 'rxjs';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { Auth } from 'src/app/Interfaces/auth';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +24,27 @@ export class SpotifyService implements OnInit {
   spotify = new SpofityWebApi({
     clientId: '792083897a9e487ca8186284678cf0b3',
   })
-  constructor(private loginService: LoginService,private audioService:AudioPlayerService) {
+  constructor(private loginService: LoginService,private audioService:AudioPlayerService,private router:Router) {
 
     this.loginService.getAuthSubject().subscribe((auth) => {
+      console.log(auth);
+
       this.spotify.setAccessToken(localStorage.getItem('token')!)
       this.authObject = auth
 
     })
+    this.spotify.setAccessToken(localStorage.getItem('token')!)
     this.spotify.getMe().then((data) => {
       this.user.username = data.body.id
       this.user.displayName = data.body.display_name!
+    }).catch((err)=>{
+       console.error(`${err} from getMe spotify service`)
+          if(this.router.url !== '/')
+
+         {
+          window.history.pushState({},'','/spotify')
+           window.location.reload()
+          }
     })
   }
   ngOnInit(): void {
@@ -105,8 +118,10 @@ export class SpotifyService implements OnInit {
       this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
 
   }
-    const ob =from(this.spotify.getUserPlaylists('21mxrckvt5fvsgubpbz3kcpuq')).pipe(map((data, index) => data.body.items),map((items,index)=>{
-    const mapper = items.map((item)=>{ return {name:item.name,description:item.description,id:item.id}
+    const ob =from(this.spotify.getUserPlaylists('21mxrckvt5fvsgubpbz3kcpuq')).pipe(catchError(err=>{
+      return err;
+    }), map((data:any, index) => data.body.items),map((items,index)=>{
+    const mapper = items.map((item:any)=>{ return {name:item.name,description:item.description,id:item.id}
       })
       return mapper
         }))
