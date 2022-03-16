@@ -15,11 +15,7 @@ export class MainContentComponent implements OnInit {
 
   constructor(private service:AudioPlayerService) {
     this.service.getSongList().subscribe((songs:any)=>{
-
-
-
      if(songs.length>0){
-      console.log(songs[0].artist);
       this.songChannels = songs
      }
     })

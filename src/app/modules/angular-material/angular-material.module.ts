@@ -8,10 +8,10 @@ import {MatCardModule} from '@angular/material/card'
 import {MatListModule} from '@angular/material/list'
 import {MatToolbarModule} from '@angular/material/toolbar'
 import {MatTabsModule} from '@angular/material/tabs'
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 const MatComponents = [
-
+  MatProgressSpinnerModule,
   MatIconModule,
   MatSliderModule,
   MatButtonModule,
@@ -20,7 +20,9 @@ const MatComponents = [
   MatInputModule,
   MatToolbarModule,
   MatCardModule,
-  MatTabsModule
+  MatTabsModule,
+
+
 ]
 @NgModule({
 

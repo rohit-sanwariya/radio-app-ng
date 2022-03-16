@@ -22,6 +22,7 @@
     "@angular/router": "~13.1.0",
     "@types/spotify-web-api-node": "^5.0.7",
     "axios": "^0.26.1",
+    "dotenv": "^16.0.0",
     "moment": "^2.29.1",
     "rxjs": "~7.4.0",
     "spotify-web-api-node": "^5.0.2",

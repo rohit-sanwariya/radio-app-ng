@@ -1,10 +1,12 @@
-import { Component, Renderer2, ElementRef, OnInit, ViewChild, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Renderer2, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { fromEvent, interval, Observable, takeUntil } from 'rxjs';
-import SpotifyWebApi from 'spotify-web-api-node';
+ 
 import { AudioState } from 'src/app/Interfaces/audio-state';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { TimeFormattingService } from 'src/app/Services/time-formatting.service';
 import { RadioList, SongList } from 'src/assets/Songs';
+import { SpotifyService } from '../spotify-home/Services/spotify.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-audio-player',
@@ -23,18 +25,29 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   idx:number = 0
   showVR:boolean= false
   audioList = [SongList,RadioList]
-  constructor(private renderer: Renderer2, public service: AudioPlayerService, private timeService: TimeFormattingService) {
+  constructor(private router:Router,private renderer: Renderer2, public service: AudioPlayerService,private spotifyService:SpotifyService, private timeService: TimeFormattingService) {
 this.state$ = this.service.getState()
 
   }
 
   ngAfterViewInit(): void {
+
     this.renderer.listen(this.audioElement.nativeElement, 'play', (event) => {
       // this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
 
     })
-    this.renderer.listen(this.audioElement.nativeElement, 'pause', (event) => {
-      // this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
+    this.renderer.listen(this.audioElement.nativeElement, 'ended', (event) => {
+    console.log('ended');
+    this.state$.subscribe((state)=>{
+      console.log(state.pfw);
+      console.log();
+
+
+
+    })
+
+
+
 
     })
     this.renderer.listen(this.audioElement.nativeElement, 'playing', (event) => {
@@ -55,23 +68,21 @@ this.state$ = this.service.getState()
     })
     this.audioElement.nativeElement.onloadedmetadata = () => {
       this.service.setDuration(this.audioElement.nativeElement.duration)
-
-
       this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
     }
-
   }
 
   ngOnInit(): void {
+    this.spotifyService.getPlaylist().subscribe((val)=>{
+      console.log(val);
+
+    })
     this.service.getSubject().subscribe((val)=>{
       this.playSong('fromList')
     })
-
     this.service.getSongList().subscribe((songs:any)=>{
      if(songs.length>0){
       this.audioList[0] = songs
-     
-
      }
     })
   }

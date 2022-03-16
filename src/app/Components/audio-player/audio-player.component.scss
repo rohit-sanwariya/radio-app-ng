@@ -87,6 +87,12 @@
           margin: 0 1rem;
           color: var(--secondary-color);
         }
+        .audio-play-pause{
+          background-color: white;
+          .mat-icon{
+            font-size: 1.5rem;
+          }
+        }
       }
       .audio-player-information{
         display: grid;

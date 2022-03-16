@@ -26,7 +26,8 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     currentIdx:0,
     AudioType:true,
     artist:'',
-    src:''
+    src:'',
+    pfw:'',
   }
 
 
@@ -51,10 +52,13 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     this.audioState.title = track.name
     this.audioState.duration = track.duration
     this.audioState.artist = track.artistName
+    this.audioState.pfw = track.pfw
    if(this.audioState.src === '' || this.audioState.src === null ){
       return
    }
-   this.callPlay()
+   if(this.audioState.pfw !=="Recently Played"){
+    this.callPlay()
+   }
 
   }
   setSongList(songs:any){

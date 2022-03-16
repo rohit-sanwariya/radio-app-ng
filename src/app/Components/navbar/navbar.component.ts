@@ -62,16 +62,14 @@ user-library-read`
   }
 
   ngOnInit(): void {
+
     this.service.getAuthSubject().pipe(distinctUntilChanged()).subscribe((auth) => {
       if (auth.accessToken !== '') {
         this.spotify.setAccessToken(auth.accessToken)
-        console.log('.....',this.spotify);
-
         this.service.setSpotifyWebApi(this.spotify)
-
-
         this.authObject = auth
         console.log('in change token', auth.accessToken,this.authObject);
+       
       }
 
     })

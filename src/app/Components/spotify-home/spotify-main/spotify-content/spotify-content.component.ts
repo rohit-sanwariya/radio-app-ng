@@ -9,15 +9,22 @@ import { SpotifyService } from '../../Services/spotify.service';
 })
 export class SpotifyContentComponent implements OnInit {
   currentContent$!:Observable<any>
+  playedFrom:string='Recently Played'
 
   constructor(private spotifyService:SpotifyService) {
     this.spotifyService.getRecentlyPlayedTracks()
+
    }
 
   ngOnInit(): void {
   this.currentContent$ = this.spotifyService.getPlaylist()
   this.currentContent$.subscribe((val)=>{
-    console.log(val.albumImg);
+    if(this.currentContent$){
+      this.currentContent$.subscribe((val)=>{
+       this.playedFrom = val[0].pfw
+
+      })
+    }
 
   })
   }

@@ -4,6 +4,8 @@ import SpofityWebApi from 'spotify-web-api-node'
 import { Playlist, User } from '../Interfaces/user';
 import { from, map, Observable, of, Subject } from 'rxjs';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
+import { Auth } from 'src/app/Interfaces/auth';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,6 +17,7 @@ export class SpotifyService implements OnInit {
   }
   playlists!: Playlist[]
   subject = new Subject()
+  authObject!:Auth
 
   spotify = new SpofityWebApi({
     clientId: '792083897a9e487ca8186284678cf0b3',
@@ -23,6 +26,8 @@ export class SpotifyService implements OnInit {
 
     this.loginService.getAuthSubject().subscribe((auth) => {
       this.spotify.setAccessToken(localStorage.getItem('token')!)
+      this.authObject = auth
+
     })
     this.spotify.getMe().then((data) => {
       this.user.username = data.body.id
@@ -30,12 +35,25 @@ export class SpotifyService implements OnInit {
     })
   }
   ngOnInit(): void {
-
   }
+
   updateContentOnSearch(search:string){
-    console.log(search);
+    const expiresAt = localStorage.getItem('expiresAt')
+    console.log('...............',localStorage.getItem('refreshToken')!);
+    this.loginService.getSubject().subscribe(val=>{
+      console.log(val);
+
+    })
+    if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
+      this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
+
+    }
+
+
+
     if(search===''){
-      console.log('blank');
+
+
       this.getRecentlyPlayedTracks()
       return
 
@@ -49,7 +67,8 @@ export class SpotifyService implements OnInit {
       }
       return small
     },item.album.images[0])
-    console.log(item.name);
+
+
 
 
     return {
@@ -65,23 +84,28 @@ export class SpotifyService implements OnInit {
       uri:item.uri,
       previewURL :item.preview_url,
       name:item.name,
+      pfw:`Search Results for ${search}`
 
 
     }
     })
     this.subject.next(mapper)
+
     return mapper
-    })).subscribe(val=>console.log)
+    })).subscribe()
 
     }
 
   getUser() {
-    console.log(this.user.username);
 
     return of(this.user)
   }
 
   fetchPlaylist(): Observable<any> {
+    if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
+      this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
+
+  }
     const ob =from(this.spotify.getUserPlaylists('21mxrckvt5fvsgubpbz3kcpuq')).pipe(map((data, index) => data.body.items),map((items,index)=>{
     const mapper = items.map((item)=>{ return {name:item.name,description:item.description,id:item.id}
       })
@@ -91,8 +115,16 @@ export class SpotifyService implements OnInit {
   }
 
   getRecentlyPlayedTracks(){
+    console.log('recently',localStorage.getItem('refreshToken')!);
+    if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
+      console.log('...............',localStorage.getItem('refreshToken')!);
+      this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
+
+  }
     from(this.spotify.getMyRecentlyPlayedTracks({limit:20})).pipe(map(data=>{
-    const mapper = data.body.items.map((item)=>{
+    const mapper = data.body.items.map((item,index)=>{
+
+
        const  album =Object.entries(item.track)[0][1]
        const smallestImg = album.images.reduce((img:any,small:any)=>{
         if(img && img.height<small.height){
@@ -100,6 +132,7 @@ export class SpotifyService implements OnInit {
         }
         return small
       },album.images[0])
+
 
 
        return {
@@ -117,6 +150,7 @@ export class SpotifyService implements OnInit {
           albumName: album.name,
           albumImg:smallestImg.url,
           albumURI: album.uri,
+          pfw:"Recently Played"
 
 
 
@@ -124,14 +158,19 @@ export class SpotifyService implements OnInit {
 
      })
      this.subject.next(mapper)
+    this.audioService.setAudio(mapper.find((track)=>track.previewURL))
+
+
      return mapper
 
     })).subscribe((val)=>{
-      // console.log(val);
-
     })
   }
   setPlaylistTracks(playlistId:string){
+    if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
+      this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
+
+  }
      from(this.spotify.getPlaylistTracks(playlistId,{limit:20})).pipe(map(data=>{
       const mapper = data.body.items.map((item)=>{
 
@@ -141,7 +180,7 @@ export class SpotifyService implements OnInit {
           }
           return small
         },item.track.album.images[0])
-        console.log(smallestImg);
+
 
 
         return {
@@ -157,12 +196,14 @@ export class SpotifyService implements OnInit {
           uri:item.track.uri,
           previewURL :item.track.preview_url,
           name:item.track.name,
+          pfw:"Playlist"
 
 
         }
         })
 
         this.subject.next(mapper)
+        // this.audioService.setAudio(mapper[0])
 
         return mapper
 
@@ -170,16 +211,11 @@ export class SpotifyService implements OnInit {
   }
   setCurrentTrack(track:any){
     this.audioService.setAudio(track)
-    // console.log(track);
-    // this.audio.src = track.previewURL
-
-
-    // this.audio.play()
 
   }
   getPlaylist(){
 
-    return this.subject.asObservable()
+    return this.subject
   }
 
 }

@@ -10,6 +10,7 @@ export interface AudioState {
   AudioType:boolean,
   artist:string,
   src:string,
+  pfw:string,
 
 }
 
