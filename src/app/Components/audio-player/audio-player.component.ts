@@ -1,6 +1,6 @@
 import { Component, Renderer2, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { fromEvent, interval, Observable, takeUntil } from 'rxjs';
- 
+
 import { AudioState } from 'src/app/Interfaces/audio-state';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { TimeFormattingService } from 'src/app/Services/time-formatting.service';
@@ -78,6 +78,7 @@ this.state$ = this.service.getState()
 
     })
     this.service.getSubject().subscribe((val)=>{
+      this.audioElement.nativeElement.autoplay = true
       this.playSong('fromList')
     })
     this.service.getSongList().subscribe((songs:any)=>{

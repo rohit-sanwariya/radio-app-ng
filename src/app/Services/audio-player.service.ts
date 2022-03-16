@@ -57,6 +57,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
       return
    }
    if(this.audioState.pfw !=="Recently Played"){
+   
     this.callPlay()
    }
 
