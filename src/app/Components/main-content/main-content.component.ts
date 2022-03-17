@@ -29,9 +29,16 @@ export class MainContentComponent implements OnInit {
       this.service.setAudioType(this.showMusic)
 
    }
-   selected(event:any){
-     console.log(event);
-      this.service.setIdx(event)
+   selected(audioSelected:any){
+     console.log(audioSelected);
+     const track ={
+      previewURL : audioSelected.src,
+      name : audioSelected.title,
+      duration : 0,
+      artistName :'',
+      pfw : 'Home',
+     }
+      this.service.setAudio(track)
 
    }
    get getIdx(){
@@ -43,7 +50,6 @@ export class MainContentComponent implements OnInit {
    }
    get isPlaying(){
      console.log(this.service.audioState.playing);
-
      return this.service.audioState.playing
    }
 

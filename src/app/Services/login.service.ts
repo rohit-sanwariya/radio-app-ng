@@ -31,21 +31,19 @@ export class LoginService implements OnInit {
 
   }
   ngOnInit(): void {
-   console.log('init');
+  //  console.log('init');
 
   }
   getSubject(){
     return this.subject.asObservable()
   }
   getAuthSubject():Observable<Auth>{
-    console.log('get auth sub called');
-    this.authSubject.subscribe(val=>console.log(val))
+    // console.log('get auth sub called');
+
     return this.authSubject.asObservable()
   }
   getSpotifyWebApi():Observable<any>{
     this.spotifySubject.subscribe((val)=>{
-      console.log(val,'.....val');
-
     })
 
     return this.spotifySubject.asObservable()
@@ -55,10 +53,10 @@ export class LoginService implements OnInit {
   }
 
   setCode(code:string){
-    console.log('hello');
+
 
     this.code = code;
-    console.log(this.code);
+
     axios.post('http://localhost:3000/login',{
       code:this.code,
     }).then((res) => {
@@ -71,10 +69,7 @@ export class LoginService implements OnInit {
 
       this.authSubject.next(auth)
       this.subject.next(auth)
-      this.authSubject.subscribe((val)=>{
-        console.log('from auth subject',val);
 
-      })
       window.history.pushState({},'','/')
       this.router.navigate(['/spotify'])
       localStorage.setItem('token',auth.accessToken)
@@ -102,7 +97,7 @@ export class LoginService implements OnInit {
       this.authSubject.next(auth)
       this.subject.next(auth)
       localStorage.setItem('token',auth.accessToken)
-    
+
       localStorage.setItem('expiresAt',auth.expiresAt.toString())
     })
   }

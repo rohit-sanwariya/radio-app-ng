@@ -12,7 +12,7 @@
 <div class="content-container" *ngIf="!showMusic">
   <ul id="radioOnScreen"   class="songs-list">
     <li *ngFor="let radio of radioChannels let idx=index">
-      <a (click)="selected(idx)" >
+      <a (click)="selected(radio)" >
         {{radio.title}}
       </a>
     </li>
@@ -22,7 +22,7 @@
   <ul id="songsOnScreen"   >
     <li *ngFor="let song of songChannels let idx = index" [ngClass]="idx==getIdx?'active':''" class="songs-list">
       <mat-icon  >audiotrack</mat-icon>
-      <a (click)="selected(idx)" >
+      <a (click)="selected(song)" >
         {{song.title}} by
         {{song.artist}}
       </a>

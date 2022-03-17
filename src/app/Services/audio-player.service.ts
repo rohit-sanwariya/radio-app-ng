@@ -1,4 +1,5 @@
 import { AfterViewInit, ElementRef, Injectable, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { RadioList, SongList } from 'src/assets/Songs';
@@ -33,7 +34,9 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
 
 
 
-  constructor(private timeService:TimeFormattingService) {
+  constructor(private timeService:TimeFormattingService,private router:Router) {
+
+
 
    }
   ngAfterViewInit(): void {
@@ -41,13 +44,11 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
 
   }
   ngOnInit(): void {
-
+    console.log(this.router.url);
   }
 
 
   setAudio(track:any){
-    console.log(track.previewURL);
-
     this.audioState.src = track.previewURL
     this.audioState.title = track.name
     this.audioState.duration = track.duration
@@ -57,8 +58,8 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
       return
    }
    if(this.audioState.pfw !=="Recently Played"){
-   
-    this.callPlay()
+
+    this.callPlay(true)
    }
 
   }
@@ -72,15 +73,14 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   getSubject(){
     return this.subject.asObservable()
   }
-  callPlay(){
-    this.subject.next(null)
+  callPlay(autoplay:boolean){
+    this.subject.next(autoplay)
   }
   playSpotify(){
 
   }
 
   play(audio:any,playedFrom:string){
-    console.log(playedFrom,audio);
    if(playedFrom=='fromPlayer'){
     this.audioState.playing ? audio.pause():audio.play();
     this.audioState.playing = !this.audioState.playing;
@@ -94,14 +94,22 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
 
   playNext(audio:any){
     this.audioState.currentIdx++
-    audio.src = this.radioList[this.audioState.currentIdx].src
-    audio.autoplay = true
-  //   this.audioState.playing = true
-  //  console.log( audio.load());
+    if(this.audioState.AudioType){
+      const track = {
+        previewURL:SongList[this.audioState.currentIdx].src,
+        name:SongList[this.audioState.currentIdx].title,
+        duration:0,
+        artistName:SongList[this.audioState.currentIdx].artist,
+        pfw:"Home",
+      }
+      this.setAudio(track)
 
-  //   audio.play()
-
+      if(this.audioState.playing){
+        audio.autoplay = true
+      }
+    }
   }
+
   playPrevious(){
     this.audioState.currentIdx--
   }
@@ -124,9 +132,9 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   setIdx(idx:number){
     this.audioState.currentIdx = idx
     this.audioState.playing = false
-    this.callPlay()
+    this.callPlay(false)
 
-    console.log(this.audioState);
+
   }
   setRange(val:number){
     this.audioState.rangeValue = val

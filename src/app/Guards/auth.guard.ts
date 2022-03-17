@@ -18,12 +18,12 @@ export class AuthGuard implements CanActivate {
 
       this.loginService.getAuthSubject().subscribe(val=>{
         accessToken = val.accessToken
-        console.log(accessToken,' ', val.accessToken);
+        // console.log(accessToken,' ', val.accessToken);
 
       });
       const hasToken = !!localStorage.getItem('token')
       const showSpotify =  accessToken===''?false:true
-      console.log(showSpotify || hasToken);
+      // console.log(showSpotify || hasToken);
 
       return showSpotify || hasToken
 

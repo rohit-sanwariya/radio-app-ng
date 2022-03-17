@@ -18,15 +18,21 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   timerFun: any
   @ViewChild('audioElement', { static: true })
   private audioElement!: ElementRef;
-  state$!:Observable<AudioState>;
+  state$!: Observable<AudioState>;
 
-  rangeVal:number = 0
-  volRange:number = 50
-  idx:number = 0
-  showVR:boolean= false
-  audioList = [SongList,RadioList]
-  constructor(private router:Router,private renderer: Renderer2, public service: AudioPlayerService,private spotifyService:SpotifyService, private timeService: TimeFormattingService) {
-this.state$ = this.service.getState()
+  rangeVal: number = 0
+  volRange: number = 50
+  idx: number = 0
+  showVR: boolean = false
+  audioList = [SongList, RadioList]
+  constructor(private router: Router,
+
+              private renderer: Renderer2,
+              public service: AudioPlayerService,
+              private spotifyService: SpotifyService,
+              private timeService: TimeFormattingService)
+               {
+    this.state$ = this.service.getState()
 
   }
 
@@ -37,35 +43,25 @@ this.state$ = this.service.getState()
 
     })
     this.renderer.listen(this.audioElement.nativeElement, 'ended', (event) => {
-    console.log('ended');
-    this.state$.subscribe((state)=>{
-      console.log(state.pfw);
-      console.log();
-
-
-
-    })
-
-
-
-
+      console.log('ended');
+      this.state$.subscribe((state) => {
+        console.log(state.pfw);
+        console.log();
+      })
     })
     this.renderer.listen(this.audioElement.nativeElement, 'playing', (event) => {
       this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
       const source = interval(1000);
       const playingAudio = fromEvent(this.audioElement.nativeElement, 'playing');
       const result = source.pipe(takeUntil(playingAudio));
-     result.subscribe(
-       ()=>{
-         this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
+      result.subscribe(
+        () => {
+          this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
 
-       }
-     )
-
-
-
-
+        }
+      )
     })
+
     this.audioElement.nativeElement.onloadedmetadata = () => {
       this.service.setDuration(this.audioElement.nativeElement.duration)
       this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
@@ -73,44 +69,58 @@ this.state$ = this.service.getState()
   }
 
   ngOnInit(): void {
-    this.spotifyService.getPlaylist().subscribe((val)=>{
-      console.log(val);
+      // console.log(this.audioType);
+
+    const onHome = this.router.url==='/'
+    if(onHome){
+      const track = {
+        previewURL:SongList[0].src,
+        name:SongList[0].title,
+        duration:0,
+        artistName:SongList[0].artist,
+        pfw:"Home",
+      }
+      // console.log(track);
+
+      this.service.setAudio(track)
+    }
+
+
+    this.spotifyService.getPlaylist().subscribe((val) => {
+      // console.log(val);
 
     })
-    this.service.getSubject().subscribe((val)=>{
+    this.service.getSubject().subscribe((val) => {
       this.audioElement.nativeElement.autoplay = true
       this.playSong('fromList')
     })
-    this.service.getSongList().subscribe((songs:any)=>{
-     if(songs.length>0){
-      this.audioList[0] = songs
-     }
+    this.service.getSongList().subscribe((songs: any) => {
+      if (songs.length > 0) {
+        this.audioList[0] = songs
+      }
     })
   }
 
-  showVolumeRange(){
+  showVolumeRange() {
     this.showVR = !this.showVR
   }
-  onVolSroll(event: any){
+
+  onVolSroll(event: any) {
     this.volRange = event.target.value
     console.log(this.volRange);
-
-    this.audioElement.nativeElement.volume = event.target.value/100
-
+    this.audioElement.nativeElement.volume = event.target.value / 100
   }
 
 
-  get range():number{
-    this.service.getState().subscribe((state)=>{
-      this.rangeVal = Math.floor(state.currentTime/state.duration*100)
+  get range(): number {
+    this.service.getState().subscribe((state) => {
+      this.rangeVal = Math.floor(state.currentTime / state.duration * 100)
 
     })
-   return this.rangeVal
+    return this.rangeVal
   }
-  get getIdx():number{
-
-
-    this.service.getState().subscribe((state)=>{
+  get getIdx(): number {
+    this.service.getState().subscribe((state) => {
       this.idx = state.currentIdx
     })
     return this.idx
@@ -119,51 +129,50 @@ this.state$ = this.service.getState()
 
 
 
-  get audioType(){
+  get audioType() {
     let t = 0
-   this.service.getState().subscribe((state)=>{
-        state.AudioType ? t =0:t=1
+    this.service.getState().subscribe((state) => {
+      state.AudioType ? t = 0 : t = 1
     })
-   console.log();
-
-
     return t
   }
-  updateArtist(){
-    if (this.audioType == 0){
-          this.service.setArtist(Object.entries(this.audioList[0][this.getIdx])[2][1])
+  updateArtist() {
+    if (this.audioType == 0) {
+      this.service.setArtist(Object.entries(this.audioList[0][this.getIdx])[2][1])
     }
-    else{
+    else {
       this.service.setArtist('')
     }
   }
 
-  playSong(playedFrom:string) {
-    this.service.play(this.audioElement.nativeElement,playedFrom)
+  playSong(playedFrom: string) {
+    this.service.play(this.audioElement.nativeElement, playedFrom)
   }
-  playNext(){
-     this.audioList[this.audioType][this.getIdx].src
+  playNext() {
+    console.log(this.audioType);
+
+    this.audioList[this.audioType][this.getIdx].src
     this.service.playNext(this.audioElement.nativeElement)
   }
-  playPrevious(){
+  playPrevious() {
     this.service.playPrevious()
   }
-  replay30(){
+  replay30() {
 
-    this.audioElement.nativeElement.currentTime -=30
+    this.audioElement.nativeElement.currentTime -= 30
     this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
   }
-  forward30(){
+  forward30() {
 
-    this.audioElement.nativeElement.currentTime +=30
+    this.audioElement.nativeElement.currentTime += 30
     this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
   }
   onSlide(event: any) {
 
-      const rangeVal = event.target.value
-      const currentVal = (this.audioElement.nativeElement.duration * rangeVal)/100
-      this.service.setCurrentTime(currentVal)
-      this.audioElement.nativeElement.currentTime = currentVal
+    const rangeVal = event.target.value
+    const currentVal = (this.audioElement.nativeElement.duration * rangeVal) / 100
+    this.service.setCurrentTime(currentVal)
+    this.audioElement.nativeElement.currentTime = currentVal
   }
 
 }

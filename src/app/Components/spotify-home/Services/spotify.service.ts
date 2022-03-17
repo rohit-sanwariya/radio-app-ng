@@ -27,7 +27,7 @@ export class SpotifyService implements OnInit {
   constructor(private loginService: LoginService,private audioService:AudioPlayerService,private router:Router) {
 
     this.loginService.getAuthSubject().subscribe((auth) => {
-      console.log(auth);
+      // console.log(auth);
 
       this.spotify.setAccessToken(localStorage.getItem('token')!)
       this.authObject = auth
@@ -52,7 +52,7 @@ export class SpotifyService implements OnInit {
 
   updateContentOnSearch(search:string){
     const expiresAt = localStorage.getItem('expiresAt')
-    console.log(this.authObject.refreshToken);
+    // console.log(this.authObject.refreshToken);
 
 
 
@@ -129,7 +129,7 @@ export class SpotifyService implements OnInit {
   }
 
   getRecentlyPlayedTracks(){
-    console.log('recently',localStorage.getItem('refreshToken')!);
+    // console.log('recently',localStorage.getItem('refreshToken')!);
     if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
 
       this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
