@@ -1,7 +1,7 @@
 <div class="container">
   <div class="artist-information">
     <div class="artist-information-img-container"  >
-      <img [ngClass]="(state$|async)?.playing?'rotate':''" src="../../../assets/img.jpg" alt="">
+      <img [ngClass]="(state$|async)?.playing?'rotate':''" [src]="(state$|async)?.cover ?(state$|async)?.cover:'../../../assets/img.jpg'" alt="">
     </div>
     <div class="artist-information-content">
       <h3 class="song-name"      >{{(state$|async)?.title}} </h3>

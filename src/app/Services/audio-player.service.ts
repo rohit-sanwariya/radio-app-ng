@@ -32,6 +32,8 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     artist:'',
     src:'',
     pfw:'',
+    cover:'',
+
   }
 
 
@@ -64,6 +66,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     this.audioState.duration = track.duration
     this.audioState.artist = track.artistName
     this.audioState.pfw = track.pfw
+    this.audioState.cover = track.albumImg
    if(this.audioState.src === '' || this.audioState.src === null ){
       return
    }
@@ -117,6 +120,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     this.audioState.currentIdx++
     if(this.audioState.AudioType){
       const track = {
+
         previewURL:SongList[this.audioState.currentIdx].src,
         name:SongList[this.audioState.currentIdx].title,
         duration:0,
@@ -146,6 +150,12 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   }
   setAudioType(type:boolean){
     this.audioState.AudioType = type
+    if(!type){
+      this.currentContent = this.radioList
+    }
+    else if(type){
+      this.currentContent = this.songList
+    }
   }
   setArtist(artist:string){
     this.audioState.artist = artist

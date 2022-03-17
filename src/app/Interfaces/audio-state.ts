@@ -11,6 +11,7 @@ export interface AudioState {
   artist:string,
   src:string,
   pfw:string,
+  cover:string,
 
 }
 
