@@ -3,16 +3,18 @@ section.card-list{
   display: grid;
   height: 100%;
   width: 100%;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit,minmax(300px,2fr));
+
   .heading{
 
     grid-column: 1/4;
     display: flex;
     align-items: center;
     justify-content: center;
+    letter-spacing: 5px;
     h2{
-      font-size: 1.5rem;
-    font-weight: 400;
+      font-size: 1.7rem;
+    font-weight: 600;
     text-transform: capitalize;
     cursor: pointer;
     &:hover{

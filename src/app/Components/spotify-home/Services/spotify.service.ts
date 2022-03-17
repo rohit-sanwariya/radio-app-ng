@@ -72,7 +72,7 @@ export class SpotifyService implements OnInit {
     }
 
     from(this.spotify.searchTracks(search)).pipe(map((data)=>{
-     const mapper = data.body.tracks?.items.map((item)=>{
+     const mapper = data.body.tracks?.items.map((item,index)=>{
        const smallestImg = item.album.images.reduce((img:any,small:any)=>{
       if(img && img.height<small.height){
         return img
@@ -84,6 +84,7 @@ export class SpotifyService implements OnInit {
 
 
     return {
+      idx:index,
       albumId:item.album,
       albumName:item.album.name,
       albumImg:smallestImg.url,
@@ -150,6 +151,7 @@ export class SpotifyService implements OnInit {
 
 
        return {
+         idx:index,
          playedAt:item.played_at,
          artistName:item.track.artists[0].name,
          artistId:item.track.artists[0].name,
@@ -186,7 +188,8 @@ export class SpotifyService implements OnInit {
 
   }
      from(this.spotify.getPlaylistTracks(playlistId,{limit:20})).pipe(map(data=>{
-      const mapper = data.body.items.map((item)=>{
+      const mapper = data.body.items.map((item,index)=>{
+          console.log(index);
 
       const smallestImg = item.track.album.images.reduce((img:any,small:any)=>{
           if(img && img.height<small.height){
@@ -198,6 +201,7 @@ export class SpotifyService implements OnInit {
 
 
         return {
+          idx:index,
           albumId:item.track.album,
           albumName:item.track.album.name,
           albumImg:smallestImg.url,
@@ -226,7 +230,7 @@ export class SpotifyService implements OnInit {
   setCurrentTrack(track:any,autoplay:boolean){
     this.audioService.setAudio(track)
     if(autoplay){
-      
+
     }
 
   }

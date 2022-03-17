@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { RadioList, SongList } from 'src/assets/Songs';
+import { SpotifyService } from '../Components/spotify-home/Services/spotify.service';
 import { AudioState } from '../Interfaces/audio-state';
 import { TimeFormattingService } from './time-formatting.service';
 
@@ -16,6 +17,8 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   private songListSubject = new BehaviorSubject([])
   radioList = RadioList
   songList = SongList
+  currentContentSubject = new Subject()
+  currentContent:any = []
   audioState:AudioState = {
     title:'',
     playing:false,
@@ -45,11 +48,17 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   }
   ngOnInit(): void {
     console.log(this.router.url);
+
+
   }
 
+  setCurrentContentSubject(content:any){
+    this.currentContentSubject.next(content)
+    this.currentContent = content
 
+  }
   setAudio(track:any ){
-    
+    this.audioState.currentIdx = track.idx
     this.audioState.src = track.previewURL
     this.audioState.title = track.name
     this.audioState.duration = track.duration
@@ -58,9 +67,16 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
    if(this.audioState.src === '' || this.audioState.src === null ){
       return
    }
-   if(this.audioState.pfw !=="Recently Played"){
+
+    console.log(this.audioState.currentIdx !== 0);
+   if(this.audioState.pfw !=="Recently Played"  ){
 
     this.callPlay(true)
+   }
+
+
+   else if(this.audioState.pfw ==="Recently Played" && this.audioState.currentIdx !== this.findIdxFirstPlayable()){
+     this.callPlay(true)
    }
 
   }
@@ -75,6 +91,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     return this.subject.asObservable()
   }
   callPlay(autoplay:boolean){
+
     this.subject.next(autoplay)
   }
   playSpotify(){
@@ -84,6 +101,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     this.audioState.playing = playing
   }
   play(audio:any,playedFrom:string){
+
    if(playedFrom=='fromPlayer'){
     this.audioState.playing ? audio.pause():audio.play();
     this.audioState.playing = !this.audioState.playing;
@@ -136,6 +154,15 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     this.audioState.currentIdx = idx
     this.audioState.playing = false
     this.callPlay(false)
+
+
+  }
+  findIdxFirstPlayable(){
+    const currentTrack = this.currentContent.find((track:any)=>track.previewURL !== null)
+    const idx = this.currentContent.findIndex((track:any)=>track.previewURL !== null)
+    return idx
+
+
 
 
   }

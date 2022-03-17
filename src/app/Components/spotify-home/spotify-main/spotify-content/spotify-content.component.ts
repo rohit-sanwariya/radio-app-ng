@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { SpotifyService } from '../../Services/spotify.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class SpotifyContentComponent implements OnInit {
   currentContent$!:Observable<any>
   playedFrom:string='Recently Played'
 
-  constructor(private spotifyService:SpotifyService) {
+  constructor(private spotifyService:SpotifyService,private audioService: AudioPlayerService) {
     this.spotifyService.getRecentlyPlayedTracks()
 
    }
@@ -30,7 +31,7 @@ export class SpotifyContentComponent implements OnInit {
   }
   setCurrent(track:any){
     console.log(track);
-
+    
     this.spotifyService.setCurrentTrack(track,false)
   }
 

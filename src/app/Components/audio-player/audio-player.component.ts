@@ -52,6 +52,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       if(this.currentContent[currentTrackIdx].previewURL !== null ){
         this.audioElement.nativeElement.autoplay = true
       this.service.setIsPlaying(true)
+      this.service.setIdx(currentTrackIdx)
         this.spotifyService.setCurrentTrack(this.currentContent[currentTrackIdx],true)
       }
       else{
@@ -102,6 +103,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
     this.spotifyService.getPlaylist().subscribe((playlist) => {
      this.currentContent = playlist
+     this.service.setCurrentContentSubject(this.currentContent)
 
     })
     this.service.getSubject().subscribe((val) => {
