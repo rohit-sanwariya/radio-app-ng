@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { LoginService } from 'src/app/Services/login.service';
 import { distinctUntilChanged } from 'rxjs/operators';
 // @ts-ignore
+import dotenv from 'dotenv'
 import SpofityWebApi from 'spotify-web-api-node'
 import { Auth } from 'src/app/Interfaces/auth';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
@@ -10,6 +11,7 @@ import { SpotifyService } from '../spotify-home/Services/spotify.service';
 import { User } from '../spotify-home/Interfaces/user';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -37,11 +39,13 @@ user-library-modify%20
 user-read-playback-state%20
 user-modify-playback-state%20
 user-read-recently-played%20
-user-library-read`
+user-library-read%20
+user-top-read`
 
   constructor(private router:Router ,private service: LoginService,private spotifyService:SpotifyService, private audioService: AudioPlayerService) {
     const url = new URLSearchParams(window.location.search)
     // console.log(this.router.url);
+    // console.log(process.env[AUTH_URI]);
 
     const code = url.get('code')
 

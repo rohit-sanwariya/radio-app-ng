@@ -12,7 +12,7 @@ export class SpotifySidebarComponent implements OnInit {
   showPlaylists:boolean = false
 
   constructor(private spotifyService:SpotifyService) {
-
+      this.spotifyService.getMyTopTracks()
    }
 
 
@@ -22,6 +22,10 @@ export class SpotifySidebarComponent implements OnInit {
      console.log(val);
 
    })
+  }
+  showTopTracks(event:Event){
+      event.preventDefault()
+      this.spotifyService.getMyTopTracks()
   }
   showPlaylistsToggle(){
     this.showPlaylists = !this.showPlaylists

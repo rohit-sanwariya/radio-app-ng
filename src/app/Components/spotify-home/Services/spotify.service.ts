@@ -6,6 +6,8 @@ import { catchError, from, map, Observable, of, Subject } from 'rxjs';
 import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { Auth } from 'src/app/Interfaces/auth';
 import { Router } from '@angular/router';
+import { Track } from 'src/app/Interfaces/track';
+import { trace } from 'console';
 
 
 @Injectable({
@@ -48,14 +50,12 @@ export class SpotifyService implements OnInit {
     })
   }
   ngOnInit(): void {
+
   }
 
   updateContentOnSearch(search:string){
     const expiresAt = localStorage.getItem('expiresAt')
     // console.log(this.authObject.refreshToken);
-
-
-
     if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
       this.loginService.refreshToken(localStorage.getItem('refreshToken')!);
 
@@ -109,9 +109,52 @@ export class SpotifyService implements OnInit {
 
     }
 
+    getMyTopTracks(){
+
+    from(this.spotify.getMyTopTracks({limit:20})).pipe(map(data=>{
+        const mapper = data.body.items.map((item,index)=>{
+           const track:Track={
+             idx:index,
+             albumId:item.album.id,
+             albumImg:this.findSmallesImage(item.album).url,
+             albumName:item.album.name,
+             albumURI:item.album.uri,
+             artistId:item.artists[0].id,
+             artistName:item.artists[0].name,
+             artistURI:item.artists[0].uri,
+             duration:item.duration_ms,
+             id:item.id,
+             name:item.name,
+             previewURL:item.preview_url!,
+             pfw:"Top Tracks",
+             playedAt:'',
+             uri:item.uri
+           }
+return track
+
+        })
+        this.subject.next(mapper)
+      return mapper
+    })).subscribe((val)=>{
+      console.log(val);
+
+    })
+    }
+
   getUser() {
 
     return of(this.user)
+  }
+  findSmallesImage(array:any){
+    const smallestImg = array.images.reduce((img:any,small:any)=>{
+      if(img && img.height<small.height){
+        return img
+      }
+      return small
+    },array.images[0])
+    console.log(smallestImg);
+
+    return smallestImg
   }
 
   fetchPlaylist(): Observable<any> {
@@ -130,6 +173,7 @@ export class SpotifyService implements OnInit {
   }
 
   getRecentlyPlayedTracks(){
+
     // console.log('recently',localStorage.getItem('refreshToken')!);
     if(parseInt(localStorage.getItem('expiresAt')!)<Date.now()){
 
@@ -189,7 +233,7 @@ export class SpotifyService implements OnInit {
   }
      from(this.spotify.getPlaylistTracks(playlistId,{limit:20})).pipe(map(data=>{
       const mapper = data.body.items.map((item,index)=>{
-          console.log(index);
+
 
       const smallestImg = item.track.album.images.reduce((img:any,small:any)=>{
           if(img && img.height<small.height){
