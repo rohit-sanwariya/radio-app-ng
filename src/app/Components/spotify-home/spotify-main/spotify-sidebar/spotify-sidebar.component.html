@@ -1,7 +1,21 @@
 <nav class="sidebar">
+  <ul>
+    <li class="header">
+      <mat-icon>timelapse</mat-icon>
+    <a class="heading" href="/" (click)="showRecentlyPlayed($event)">Recently Played</a>
+
+    </li>
+  </ul>
   <ul  >
-      <li *ngFor="let playlist of playlists$|async">
-        <a href="#" (click)="setCurrentPlaylist($event,playlist)">{{playlist.name}}</a>
-      </li>
+
+      <li (click)="showPlaylistsToggle()" class="header">
+        <mat-icon>library_books</mat-icon>
+        <a  class="heading">My Playlists </a>
+<mat-icon class="right">add</mat-icon>
+      </li >
+        <li  [ngClass]="{closed:!showPlaylists}" *ngFor="let playlist of playlists$|async">
+          <a href="#" (click)="setCurrentPlaylist($event,playlist)">{{playlist.name}}</a>
+        </li>
+
   </ul>
 </nav>

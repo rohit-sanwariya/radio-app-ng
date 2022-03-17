@@ -9,6 +9,7 @@ import { SpotifyService } from '../../Services/spotify.service';
 })
 export class SpotifySidebarComponent implements OnInit {
   playlists$!:Observable<any>
+  showPlaylists:boolean = false
 
   constructor(private spotifyService:SpotifyService) {
 
@@ -21,6 +22,13 @@ export class SpotifySidebarComponent implements OnInit {
      console.log(val);
 
    })
+  }
+  showPlaylistsToggle(){
+    this.showPlaylists = !this.showPlaylists
+  }
+  showRecentlyPlayed(event:Event){
+    event.preventDefault()
+    this.spotifyService.getRecentlyPlayedTracks()
   }
   setCurrentPlaylist(event:Event,playlist:any){
     event.preventDefault()
