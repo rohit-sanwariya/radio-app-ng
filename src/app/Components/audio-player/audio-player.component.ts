@@ -19,7 +19,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   @ViewChild('audioElement', { static: true })
   private audioElement!: ElementRef;
   state$!: Observable<AudioState>;
-
+  currentContent:any = []
   rangeVal: number = 0
   volRange: number = 50
   idx: number = 0
@@ -43,11 +43,25 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
     })
     this.renderer.listen(this.audioElement.nativeElement, 'ended', (event) => {
-      console.log('ended');
-      this.state$.subscribe((state) => {
-        console.log(state.pfw);
-        console.log();
-      })
+      console.log(this.currentContent);
+      const currentSongSrc = this.audioElement.nativeElement.src
+      let currentTrackIdx = this.currentContent.findIndex((track:any)=>track.previewURL===currentSongSrc)+1
+
+
+
+      if(this.currentContent[currentTrackIdx].previewURL !== null ){
+        this.audioElement.nativeElement.autoplay = true
+      this.service.setIsPlaying(true)
+        this.spotifyService.setCurrentTrack(this.currentContent[currentTrackIdx],true)
+      }
+      else{
+        this.audioElement.nativeElement.autoplay = false
+        this.service.setIsPlaying(false)
+      }
+
+
+
+
     })
     this.renderer.listen(this.audioElement.nativeElement, 'playing', (event) => {
       this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
@@ -86,8 +100,8 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
     }
 
 
-    this.spotifyService.getPlaylist().subscribe((val) => {
-      // console.log(val);
+    this.spotifyService.getPlaylist().subscribe((playlist) => {
+     this.currentContent = playlist
 
     })
     this.service.getSubject().subscribe((val) => {

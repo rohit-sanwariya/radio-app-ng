@@ -48,7 +48,8 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   }
 
 
-  setAudio(track:any){
+  setAudio(track:any ){
+    
     this.audioState.src = track.previewURL
     this.audioState.title = track.name
     this.audioState.duration = track.duration
@@ -79,7 +80,9 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
   playSpotify(){
 
   }
-
+  setIsPlaying(playing:boolean){
+    this.audioState.playing = playing
+  }
   play(audio:any,playedFrom:string){
    if(playedFrom=='fromPlayer'){
     this.audioState.playing ? audio.pause():audio.play();

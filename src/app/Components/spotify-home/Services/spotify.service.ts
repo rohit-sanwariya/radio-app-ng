@@ -223,8 +223,11 @@ export class SpotifyService implements OnInit {
 
     })).subscribe()
   }
-  setCurrentTrack(track:any){
+  setCurrentTrack(track:any,autoplay:boolean){
     this.audioService.setAudio(track)
+    if(autoplay){
+      
+    }
 
   }
   getPlaylist(){

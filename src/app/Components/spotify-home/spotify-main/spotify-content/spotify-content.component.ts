@@ -31,7 +31,7 @@ export class SpotifyContentComponent implements OnInit {
   setCurrent(track:any){
     console.log(track);
 
-    this.spotifyService.setCurrentTrack(track)
+    this.spotifyService.setCurrentTrack(track,false)
   }
 
 }
