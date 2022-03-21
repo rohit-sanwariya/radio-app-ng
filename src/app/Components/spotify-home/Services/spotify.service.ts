@@ -322,7 +322,7 @@ export class SpotifyService implements OnInit {
           albumImg: smallestImg.url,
           albumURI: item.track.album.uri,
           artistName: item.track.artists[0].name,
-          artistId: item.track.artists[0].name,
+          artistId: item.track.artists[0].id,
           artistURI: item.track.artists[0].uri,
           id: item.track.id,
           duration: item.track.duration_ms,
