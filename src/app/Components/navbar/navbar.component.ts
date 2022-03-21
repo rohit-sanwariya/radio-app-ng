@@ -48,6 +48,8 @@ user-top-read`
     // console.log(process.env[AUTH_URI]);
 
     const code = url.get('code')
+      console.log(this.router.url);
+      const routeURL = this.router.url
 
     if(this.router.url == '/spotify'){
         this.showSpotifyIcon = false
@@ -81,18 +83,12 @@ user-top-read`
 
       })
       this.search.valueChanges.subscribe((searchTerm) => {
-
+        this.router.navigate(['/spotify'])
         this.spotifyService.updateContentOnSearch(searchTerm)
         if (searchTerm === '') { this.searchResults = []; return; }
         if (!this.authObject) return
-
-
-
         this.spotify.searchTracks(searchTerm).then((res) => {
         this.searchResults = res.body.tracks?.items.map(track => {
-
-
-
             const smallestAlbumImage = track.album.images.reduce((smallest: any, image: any) => {
               if (image.height < smallest.height) { return image }
               return smallest

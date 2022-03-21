@@ -9,6 +9,7 @@ export class TimeFormattingService {
 
   secondsToString(duration: number): string {
     let durationAudio = ''
+      // console.log(duration);
 
 
       const min = Math.floor(duration / 60)
@@ -18,7 +19,7 @@ export class TimeFormattingService {
 
 
       durationAudio = `${('00000' + min.toString()).slice(lenMin - 2, lenMin)}:${sec.slice(lenSec - 2, lenSec)}`
-    
+
     return isFinite(duration)?durationAudio:'00:00'
   }
 }

@@ -85,7 +85,7 @@ export class SpotifyService implements OnInit {
           albumImg: smallestImg.url,
           albumURI: item.album.uri,
           artistName: item.artists[0].name,
-          artistId: item.artists[0].name,
+          artistId: item.artists[0].id,
           artistURI: item.artists[0].uri,
           id: item.id,
           duration: item.duration_ms,
@@ -131,7 +131,7 @@ export class SpotifyService implements OnInit {
 
       const mapper = tracks.map((item: any, index: number) => {
 
-        const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms), item.uri, item.preview_url, item.name, item.album.id, item.album.name, this.findSmallesImage(item.album).url, item.album.uri, "Details",item.popularity);
+        const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms/1000), item.uri, item.preview_url, item.name, item.album.id, item.album.name, this.findSmallesImage(item.album).url, item.album.uri, "Details",item.popularity);
         //  console.log(track);
       return track
 
@@ -166,7 +166,9 @@ export class SpotifyService implements OnInit {
 
       this.artistSubject.next(currentAlbum)
       const mapper = album.tracks.items.map((item,index)=>{
-        const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms), item.uri, item.preview_url!, item.name, currentAlbum.id, currentAlbum.name, this.findSmallesImage(album).url, '', "Details",-1);
+        console.log(item.duration_ms);
+
+        const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms/1000), item.uri, item.preview_url!, item.name, currentAlbum.id, currentAlbum.name, this.findSmallesImage(album).url, '', "Details",-1);
         return track
       })
       this.artistTopTracks.next(mapper)
