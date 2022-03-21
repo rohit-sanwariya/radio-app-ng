@@ -22,7 +22,8 @@ const routes:Routes = [
   {path:'',component:HomeComponent },
   {path:'spotify',component:SpotifyHomeComponent,canActivate:[AuthGuard],children:[
     {path:'',component:SpotifyContentComponent},
-    {path:'details',component:DetailComponent}
+    {path:'details/artist/:id',component:DetailComponent},
+    {path:'details/album/:id',component:DetailComponent},
   ]},
 ]
 

@@ -16,7 +16,9 @@
     <footer class="card-footer">
       <p class="alert-text" *ngIf="!track.previewURL">No Preview Available</p>
       <p  class="footer-text">
-        <a [routerLink]="['details']">{{track.artistName}} </a> from {{track.albumName}}
+        <a class="footer-text-link" (click)="showDetails(track,'artist')" [routerLink]="['details','artist',track.artistId]">{{track.artistName}} </a> from
+        <a class="footer-text-link" (click)="showDetails(track,'album')" [routerLink]="['details','album',track.albumId]"> {{track.albumName}} </a>
+
       </p>
     </footer>
 
