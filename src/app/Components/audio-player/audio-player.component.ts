@@ -7,6 +7,7 @@ import { TimeFormattingService } from 'src/app/Services/time-formatting.service'
 import { RadioList, SongList } from 'src/assets/Songs';
 import { SpotifyService } from '../spotify-home/Services/spotify.service';
 import { Router } from '@angular/router';
+import { Track } from 'src/app/Interfaces/track';
 
 @Component({
   selector: 'app-audio-player',
@@ -85,12 +86,19 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
       // console.log(this.audioType);
+      console.log(this.audioType);
 
+      this.service.getcurrentContentSubject().subscribe((content)=>{
+
+        this.currentContent = content;
+
+      })
     const onHome = this.router.url==='/'
     if(onHome){
       const track = {
         previewURL:SongList[0].src,
         name:SongList[0].title,
+        idx:0,
         duration:0,
         artistName:SongList[0].artist,
         pfw:"Home",
@@ -98,6 +106,14 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       // console.log(track);
 
       this.service.setAudio(track)
+      if(this.audioType === 0){
+        this.service.setCurrentContentSubject(SongList);
+      }
+      else{
+        console.log('hell yeah');
+        this.service.setCurrentContentSubject(RadioList);
+      }
+
     }
 
 
@@ -152,23 +168,61 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
     })
     return t
   }
-  updateArtist() {
-    if (this.audioType == 0) {
-      this.service.setArtist(Object.entries(this.audioList[0][this.getIdx])[2][1])
-    }
-    else {
-      this.service.setArtist('')
-    }
-  }
+  // updateArtist() {
+  //   if (this.audioType == 0) {
+  //     this.service.setArtist(Object.entries(this.audioList[0][this.getIdx])[2][1])
+  //   }
+  //   else {
+  //     this.service.setArtist('')
+  //   }
+  // }
 
   playSong(playedFrom: string) {
     this.service.play(this.audioElement.nativeElement, playedFrom)
   }
   playNext() {
-    console.log(this.audioType);
+    // debugger
+    console.log(this.currentContent);
 
-    this.audioList[this.audioType][this.getIdx].src
-    this.service.playNext(this.audioElement.nativeElement)
+    const end:number = this.currentContent.length
+
+     this.state$.subscribe(val=>{
+    let currentIdx = this.currentContent.findIndex((track:any)=>track.src === val.src )
+    currentIdx++
+      if(currentIdx<end){
+        console.log('less');
+        const track = {
+          previewURL:this.currentContent[currentIdx].src,
+          name:this.currentContent[currentIdx].title,
+          idx:currentIdx,
+          duration:currentIdx,
+          artistName:this.currentContent[currentIdx].artist,
+          pfw:"Home",
+        }
+        this.service.setAudio(track)
+
+      }
+      else{
+        console.log('more');
+
+        const track = {
+          previewURL:this.currentContent[0].src,
+          name:this.currentContent[0].title,
+          idx:0,
+          duration:0,
+          artistName:this.currentContent[0].artist,
+          pfw:"Home",
+        }
+        // console.log(track);
+
+        this.service.setAudio(track)
+      }
+
+
+    })
+
+
+
   }
   playPrevious() {
     this.service.playPrevious()

@@ -59,6 +59,9 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     this.currentContent = content
 
   }
+  getcurrentContentSubject(){
+    return this.currentContentSubject.asObservable()
+  }
   setAudio(track:any ){
     this.audioState.currentIdx = track.idx
     this.audioState.src = track.previewURL
@@ -71,7 +74,13 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
       return
    }
 
-    console.log(this.audioState.currentIdx !== 0);
+    const showMusic = this.audioState.currentIdx !== 0
+    if(!showMusic){
+
+
+      this.currentContentSubject.next(this.songList)
+    }
+
    if(this.audioState.pfw !=="Recently Played"  ){
 
     this.callPlay(true)
@@ -118,6 +127,8 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
 
   playNext(audio:any){
     this.audioState.currentIdx++
+    console.log(this.currentContent,'hell');
+
     if(this.audioState.AudioType){
       const track = {
 
@@ -126,6 +137,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
         duration:0,
         artistName:SongList[this.audioState.currentIdx].artist,
         pfw:"Home",
+        audioType:true,
       }
       this.setAudio(track)
 

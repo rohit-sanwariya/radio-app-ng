@@ -2,14 +2,14 @@
   <ul>
     <li class="header">
       <mat-icon>timelapse</mat-icon>
-    <a class="heading" href="/" (click)="showRecentlyPlayed($event)">Recently Played</a>
+    <a class="heading" [routerLink]="['../','spotify']"(click)="showRecentlyPlayed($event)">Recently Played</a>
 
     </li>
   </ul>
   <ul>
     <li class="header">
       <mat-icon>trending_up</mat-icon>
-    <a class="heading" href="/" (click)="showTopTracks($event)">
+    <a class="heading" [routerLink]="['../','spotify']" (click)="showTopTracks($event)">
       My Top Tracks</a>
     </li>
   </ul>
@@ -17,7 +17,7 @@
 
       <li (click)="showPlaylistsToggle()" class="header">
         <mat-icon>library_books</mat-icon>
-        <a  class="heading">My Playlists </a>
+        <a [routerLink]="['../','spotify']"  class="heading">My Playlists </a>
 <mat-icon class="right">add</mat-icon>
       </li >
         <li  [ngClass]="{closed:!showPlaylists}" *ngFor="let playlist of playlists$|async">

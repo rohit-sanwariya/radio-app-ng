@@ -16,10 +16,14 @@ import { AuthGuard } from './Guards/auth.guard';
 import { SpotifyMainComponent } from './Components/spotify-home/spotify-main/spotify-main.component';
 import { SpotifySidebarComponent } from './Components/spotify-home/spotify-main/spotify-sidebar/spotify-sidebar.component';
 import { SpotifyContentComponent } from './Components/spotify-home/spotify-main/spotify-content/spotify-content.component';
+import { DetailComponent } from './Components/spotify-home/spotify-main/detail/detail.component';
 
 const routes:Routes = [
   {path:'',component:HomeComponent },
-  {path:'spotify',component:SpotifyHomeComponent,canActivate:[AuthGuard]},
+  {path:'spotify',component:SpotifyHomeComponent,canActivate:[AuthGuard],children:[
+    {path:'',component:SpotifyContentComponent},
+    {path:'details',component:DetailComponent}
+  ]},
 ]
 
 @NgModule({
@@ -33,6 +37,7 @@ const routes:Routes = [
     SpotifyMainComponent,
     SpotifySidebarComponent,
     SpotifyContentComponent,
+    DetailComponent,
   ],
   imports: [
     BrowserModule,

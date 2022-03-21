@@ -1,10 +1,11 @@
+
 <section class="card-list">
  <div class="heading"  >
     <h2  >{{playedFrom}}</h2>
   <mat-spinner  *ngIf="!(currentContent$|async)"></mat-spinner>
 
   </div>
-  <article class="card" *ngFor="let track of currentContent$|async" (click)="setCurrent(track)">
+  <article  class="card" *ngFor="let track of currentContent$|async" (click)="setCurrent(track)">
 
     <header class="card-header"> {{track.name}}</header>
 
@@ -14,7 +15,9 @@
     </div>
     <footer class="card-footer">
       <p class="alert-text" *ngIf="!track.previewURL">No Preview Available</p>
-      <p class="footer-text">{{track.artistName}} from {{track.albumName}}</p>
+      <p  class="footer-text">
+        <a [routerLink]="['details']">{{track.artistName}} </a> from {{track.albumName}}
+      </p>
     </footer>
 
   </article>

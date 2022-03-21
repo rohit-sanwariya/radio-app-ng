@@ -17,15 +17,18 @@ export class MainContentComponent implements OnInit {
     this.service.getSongList().subscribe((songs:any)=>{
      if(songs.length>0){
       this.songChannels = songs
+
+
+      this.service.setCurrentContentSubject(songs)
      }
     })
    }
   showMusic:boolean = true
   ngOnInit(): void {
+
   }
    showMe(isMusic:boolean){
       this.showMusic = isMusic
-      console.log(this.showMusic);
       this.service.setAudioType(this.showMusic)
 
    }
@@ -36,7 +39,7 @@ export class MainContentComponent implements OnInit {
       name : audioSelected.title,
       duration : 0,
       artistName :'',
-      pfw : 'Home',
+      pfw : 'Home/radio',
      }
       this.service.setAudio(track)
 
