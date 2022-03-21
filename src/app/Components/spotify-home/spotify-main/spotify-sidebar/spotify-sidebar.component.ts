@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SpotifyService } from '../../Services/spotify.service';
 
@@ -11,7 +12,7 @@ export class SpotifySidebarComponent implements OnInit {
   playlists$!:Observable<any>
   showPlaylists:boolean = false
 
-  constructor(private spotifyService:SpotifyService) {
+  constructor(private spotifyService:SpotifyService,private router:Router) {
       this.spotifyService.getMyTopTracks()
    }
 
@@ -36,8 +37,10 @@ export class SpotifySidebarComponent implements OnInit {
   }
   setCurrentPlaylist(event:Event,playlist:any){
     event.preventDefault()
-
     this.spotifyService.setPlaylistTracks(playlist.id)
+    this.router.navigate(['/spotify'])
+
+
 
 
   }
