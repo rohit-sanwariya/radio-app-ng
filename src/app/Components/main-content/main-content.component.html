@@ -9,6 +9,7 @@
       </li>
     </ul>
   </nav>
+
 <div class="content-container" *ngIf="!showMusic">
   <ul id="radioOnScreen"   class="songs-list">
     <li *ngFor="let radio of radioChannels let idx=index">
@@ -17,6 +18,7 @@
       </a>
     </li>
   </ul>
+  <!-- <app-track-container class="table" [data]="radioChannels" ></app-track-container> -->
 </div>
  <div class="content-container" *ngIf="showMusic">
   <ul id="songsOnScreen"   >
@@ -28,5 +30,7 @@
       </a>
     </li>
   </ul>
+
+  <!-- <app-track-container class="table" [data]="songChannels" ></app-track-container> -->
  </div>
 </main>

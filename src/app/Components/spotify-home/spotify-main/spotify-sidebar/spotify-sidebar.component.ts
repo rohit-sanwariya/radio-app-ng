@@ -39,10 +39,6 @@ export class SpotifySidebarComponent implements OnInit {
     event.preventDefault()
     this.spotifyService.setPlaylistTracks(playlist.id)
     this.router.navigate(['/spotify'])
-
-
-
-
   }
 
 }

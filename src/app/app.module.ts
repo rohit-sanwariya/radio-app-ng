@@ -17,9 +17,14 @@ import { SpotifyMainComponent } from './Components/spotify-home/spotify-main/spo
 import { SpotifySidebarComponent } from './Components/spotify-home/spotify-main/spotify-sidebar/spotify-sidebar.component';
 import { SpotifyContentComponent } from './Components/spotify-home/spotify-main/spotify-content/spotify-content.component';
 import { DetailComponent } from './Components/spotify-home/spotify-main/detail/detail.component';
+import { TrackContainerComponent } from './Components/track-container/track-container.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 const routes:Routes = [
   {path:'',component:HomeComponent },
+  {path:'table',component:TrackContainerComponent },
   {path:'spotify',component:SpotifyHomeComponent,canActivate:[AuthGuard],children:[
     {path:'',component:SpotifyContentComponent},
     {path:'details/artist/:id',component:DetailComponent},
@@ -39,6 +44,7 @@ const routes:Routes = [
     SpotifySidebarComponent,
     SpotifyContentComponent,
     DetailComponent,
+    TrackContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +53,10 @@ const routes:Routes = [
     BrowserAnimationsModule,
     AngularMaterialModule,
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

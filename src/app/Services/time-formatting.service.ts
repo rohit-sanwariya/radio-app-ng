@@ -20,6 +20,6 @@ export class TimeFormattingService {
 
       durationAudio = `${('00000' + min.toString()).slice(lenMin - 2, lenMin)}:${sec.slice(lenSec - 2, lenSec)}`
 
-    return isFinite(duration)?durationAudio:'00:00'
+    return isFinite(duration)?durationAudio:''
   }
 }

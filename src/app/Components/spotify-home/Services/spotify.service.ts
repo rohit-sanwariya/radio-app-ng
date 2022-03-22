@@ -7,7 +7,7 @@ import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { Auth } from 'src/app/Interfaces/auth';
 import { Router } from '@angular/router';
 import { Track, TrackModal } from 'src/app/Interfaces/track';
-import { log, trace } from 'console';
+
 import { TimeFormattingService } from 'src/app/Services/time-formatting.service';
 
 
@@ -30,7 +30,9 @@ export class SpotifyService implements OnInit {
   spotify = new SpofityWebApi({
     clientId: '792083897a9e487ca8186284678cf0b3',
   })
-  constructor(private loginService: LoginService,private timeService:TimeFormattingService, private audioService: AudioPlayerService, private router: Router) {
+  constructor(private loginService: LoginService,
+    private timeService:TimeFormattingService,
+    private audioService: AudioPlayerService, private router: Router) {
 
     this.loginService.getAuthSubject().subscribe((auth) => {
       // console.log(auth);
@@ -52,14 +54,30 @@ export class SpotifyService implements OnInit {
     })
   }
   ngOnInit(): void {
-    console.log(this.currentId);
-
 
   }
   getCurrentId(){
     return of(this.currentId)
   }
+  trackGenerator(tracks:any):TrackModal[]{
+    console.log(tracks);
 
+    const mapper:TrackModal[] =  tracks?.items.map((item:any, index:number) => {
+
+      const InstanceTrack:Track = new TrackModal(
+        index,'',item.artists[0].name,
+        item.artists[0].id,item.artists[0].uri,
+        item.id,item.duration_ms, item.uri,
+        item.preview_url!,item.name,item.album.id,
+        item.album.name,this.findSmallesImage(item.album).url,
+        item.album.uri,"Playlist",-1
+      )
+      return InstanceTrack
+    })!
+    this.subject.next(mapper)
+    return mapper
+
+  }
   updateContentOnSearch(search: string) {
     const expiresAt = localStorage.getItem('expiresAt')
     // console.log(this.authObject.refreshToken);
@@ -71,34 +89,9 @@ export class SpotifyService implements OnInit {
       return
     }
     from(this.spotify.searchTracks(search)).pipe(map((data) => {
-      const mapper = data.body.tracks?.items.map((item, index) => {
-        const smallestImg = item.album.images.reduce((img: any, small: any) => {
-          if (img && img.height < small.height) {
-            return img
-          }
-          return small
-        }, item.album.images[0])
-        return {
-          idx: index,
-          albumId: item.album,
-          albumName: item.album.name,
-          albumImg: smallestImg.url,
-          albumURI: item.album.uri,
-          artistName: item.artists[0].name,
-          artistId: item.artists[0].id,
-          artistURI: item.artists[0].uri,
-          id: item.id,
-          duration: item.duration_ms,
-          uri: item.uri,
-          previewURL: item.preview_url,
-          name: item.name,
-          pfw: `Search Results for ${search}`
+     const  mapper= this.trackGenerator(data.body.tracks)
 
-
-        }
-      })
       this.subject.next(mapper)
-
       return mapper
     })).subscribe()
 
@@ -111,31 +104,21 @@ export class SpotifyService implements OnInit {
       const largest = images.reduce((largest: any, current: any) => {
         if (largest.height < current) { return current; }
         return largest
-
       }, images[0])
-
       const artist = {
         name:arttistInfo.name,
         popularity:arttistInfo.popularity,
         image: largest.url,
         id: arttistInfo.id,
         followers: arttistInfo.followers.total,
-
-
       }
       this.artistSubject.next(artist)
     })
     from(this.spotify.getArtistTopTracks(artistId, 'IN')).pipe(
       map((data) => data.body.tracks)).subscribe((tracks) => {
-
-
       const mapper = tracks.map((item: any, index: number) => {
-
-        const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms/1000), item.uri, item.preview_url, item.name, item.album.id, item.album.name, this.findSmallesImage(item.album).url, item.album.uri, "Details",item.popularity);
-        //  console.log(track);
+      const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms/1000), item.uri, item.preview_url, item.name, item.album.id, item.album.name, this.findSmallesImage(item.album).url, item.album.uri, "Details",item.popularity);
       return track
-
-
       })
 
 
@@ -162,13 +145,14 @@ export class SpotifyService implements OnInit {
         id: album.id,
         followers: null,
       }
-      console.log(currentAlbum);
-
       this.artistSubject.next(currentAlbum)
       const mapper = album.tracks.items.map((item,index)=>{
-        console.log(item.duration_ms);
 
-        const track = new TrackModal(index, '', item.artists[0].name, item.artists[0].id, item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms/1000), item.uri, item.preview_url!, item.name, currentAlbum.id, currentAlbum.name, this.findSmallesImage(album).url, '', "Details",-1);
+        const track = new TrackModal(
+         index, '', item.artists[0].name, item.artists[0].id,
+         item.artists[0].uri, item.id, this.timeService.secondsToString(item.duration_ms/1000),
+         item.uri, item.preview_url!, item.name, currentAlbum.id, currentAlbum.name,
+         this.findSmallesImage(album).url, '', "Details",-1);
         return track
       })
       this.artistTopTracks.next(mapper)
@@ -182,25 +166,17 @@ export class SpotifyService implements OnInit {
 
   getMyTopTracks() {
     from(this.spotify.getMyTopTracks({ limit: 20 })).pipe(map(data => {
-      const mapper = data.body.items.map((item, index) => {
-        const track: Track = {
-          idx: index,
-          albumId: item.album.id,
-          albumImg: this.findSmallesImage(item.album).url,
-          albumName: item.album.name,
-          albumURI: item.album.uri,
-          artistId: item.artists[0].id,
-          artistName: item.artists[0].name,
-          artistURI: item.artists[0].uri,
-          duration: item.duration_ms,
-          id: item.id,
-          name: item.name,
-          previewURL: item.preview_url!,
-          pfw: "Top Tracks",
-          playedAt: '',
-          uri: item.uri
-        }
-        return track
+      const mapper:Track[] = data.body.items.map((item, index) => {
+        const InstanceTrack = new TrackModal(
+          index,'',item.artists[0].name,
+          item.artists[0].id,item.artists[0].uri,
+          item.id,item.duration_ms, item.uri,
+          item.preview_url!,item.name,item.album.id,
+          item.album.name,this.findSmallesImage(item.album).url,
+          item.album.uri,"Top Tracks",-1
+        )
+
+        return InstanceTrack
 
       })
       this.subject.next(mapper)
@@ -212,10 +188,12 @@ export class SpotifyService implements OnInit {
   }
 
   getUser() {
-
     return of(this.user)
   }
+
   findSmallesImage(array: any) {
+
+
     const smallestImg = array.images.reduce((img: any, small: any) => {
       if (img && img.height < small.height) {
         return img
@@ -252,48 +230,22 @@ export class SpotifyService implements OnInit {
 
     }
     from(this.spotify.getMyRecentlyPlayedTracks({ limit: 20 })).pipe(map(data => {
-      const mapper = data.body.items.map((item, index) => {
-
-
+      const mapper:Track[] = data.body.items.map((item, index) => {
         const album = Object.entries(item.track)[0][1]
-        const smallestImg = album.images.reduce((img: any, small: any) => {
-          if (img && img.height < small.height) {
-            return img
-          }
-          return small
-        }, album.images[0])
-
-
-
-        return {
-          idx: index,
-          playedAt: item.played_at,
-          artistName: item.track.artists[0].name,
-          artistId: item.track.artists[0].id,
-          artistURI: item.track.artists[0].uri,
-          id: item.track.id,
-          duration: item.track.duration_ms,
-          uri: item.track.uri,
-          previewURL: item.track.preview_url,
-          name: item.track.name,
-          track: item.track,
-          albumId: album.id,
-          albumName: album.name,
-          albumImg: smallestImg.url,
-          albumURI: album.uri,
-          pfw: "Recently Played"
-
-
-
-        }
+        const InstanceTrack = new TrackModal(
+          index,item.played_at,item.track.artists[0].name,
+          item.track.artists[0].id,item.track.artists[0].uri,
+          item.track.id,item.track.duration_ms, item.track.uri,
+          item.track.preview_url!,item.track.name,album.id,
+          album.name,this.findSmallesImage(album).url,
+          album.uri,"Recently Played",-1
+        )
+        return InstanceTrack
 
       })
       this.subject.next(mapper)
       this.audioService.setAudio(mapper.find((track) => track.previewURL))
-
-
       return mapper
-
     })).subscribe((val) => {
     })
   }
@@ -303,36 +255,17 @@ export class SpotifyService implements OnInit {
 
     }
     from(this.spotify.getPlaylistTracks(playlistId, { limit: 20 })).pipe(map(data => {
-      const mapper = data.body.items.map((item, index) => {
+      const mapper:Track[] = data.body.items.map((item, index) => {
 
-
-        const smallestImg = item.track.album.images.reduce((img: any, small: any) => {
-          if (img && img.height < small.height) {
-            return img
-          }
-          return small
-        }, item.track.album.images[0])
-
-
-
-        return {
-          idx: index,
-          albumId: item.track.album,
-          albumName: item.track.album.name,
-          albumImg: smallestImg.url,
-          albumURI: item.track.album.uri,
-          artistName: item.track.artists[0].name,
-          artistId: item.track.artists[0].id,
-          artistURI: item.track.artists[0].uri,
-          id: item.track.id,
-          duration: item.track.duration_ms,
-          uri: item.track.uri,
-          previewURL: item.track.preview_url,
-          name: item.track.name,
-          pfw: "Playlist"
-
-
-        }
+        const InstanceTrack = new TrackModal(
+          index,'',item.track.artists[0].name,
+          item.track.artists[0].id,item.track.artists[0].uri,
+          item.track.id,item.track.duration_ms, item.track.uri,
+          item.track.preview_url!,item.track.name,item.track.album.id,
+          item.track.album.name,this.findSmallesImage(item.track.album).url,
+          item.track.album.uri,"Playlist",-1
+        )
+        return InstanceTrack
       })
 
       this.subject.next(mapper)
@@ -342,6 +275,8 @@ export class SpotifyService implements OnInit {
 
     })).subscribe()
   }
+
+
   setCurrentTrack(track: any, autoplay: boolean) {
     this.audioService.setAudio(track)
     if (autoplay) {

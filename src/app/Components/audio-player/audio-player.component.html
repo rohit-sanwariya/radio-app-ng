@@ -18,14 +18,14 @@
       <button (click)="playPrevious()" mat-icon-button class="btn audio-forward ">
         <mat-icon>skip_previous</mat-icon>
       </button>
-      <button mat-icon-button (click)="replay30()" class="btn audio-forward ">
-        <mat-icon>replay_30</mat-icon>
+      <button mat-icon-button (click)="replay10()" class="btn audio-forward ">
+        <mat-icon>replay_10</mat-icon>
       </button>
       <button (click)="playSong('fromPlayer')" mat-icon-button class="btn audio-play-pause">
         <mat-icon>{{(state$|async)?.playing ?'pause':'play_arrow'}}</mat-icon>
       </button>
-      <button (click)="forward30()" mat-icon-button class="btn audio-previous">
-        <mat-icon>forward_30</mat-icon>
+      <button (click)="forward10()" mat-icon-button class="btn audio-previous">
+        <mat-icon>forward_10</mat-icon>
       </button>
       <button (click)="playNext()" mat-icon-button class="btn audio-previous">
         <mat-icon>skip_next</mat-icon>

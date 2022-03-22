@@ -12,7 +12,7 @@ import { AudioPlayerService } from 'src/app/Services/audio-player.service';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit,AfterViewInit {
-  displayedColumns: string[] = ['position', 'name', 'popularity','Preview Available', 'duration'];
+  displayedColumns: string[] = ['idx', 'name', 'popularity','previewURL', 'duration'];
   tracks!:any;
   dataSource = new MatTableDataSource( );
   info!:any
