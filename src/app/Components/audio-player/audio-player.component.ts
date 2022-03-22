@@ -149,7 +149,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       this.rangeVal = Math.floor(state.currentTime / state.duration * 100)
 
     })
-    return this.rangeVal
+    return isFinite(this.rangeVal)?this.rangeVal:0
   }
   get getIdx(): number {
     this.service.getState().subscribe((state) => {
@@ -244,8 +244,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
         }
         let currentIdx = this.currentContent.findIndex((track:any)=>track.src === val.src )
         currentIdx--
-          if(currentIdx<end){
-
+          if(currentIdx<end && currentIdx>0){
             const track = {
               previewURL:this.currentContent[currentIdx].src,
               name:this.currentContent[currentIdx].title,
@@ -255,9 +254,11 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
               pfw:"Home",
             }
             this.service.setAudio(track)
-
           }
           else{
+            console.log('hello');
+            this.audioElement.nativeElement.pause()
+            this.rangeVal = 0
             const track = {
               previewURL:this.currentContent[0].src,
               name:this.currentContent[0].title,
