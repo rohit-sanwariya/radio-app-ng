@@ -7,7 +7,6 @@ import { AudioPlayerService } from 'src/app/Services/audio-player.service';
 import { Auth } from 'src/app/Interfaces/auth';
 import { Router } from '@angular/router';
 import { Track, TrackModal } from 'src/app/Interfaces/track';
-
 import { TimeFormattingService } from 'src/app/Services/time-formatting.service';
 
 
@@ -244,7 +243,7 @@ export class SpotifyService implements OnInit {
 
       })
       this.subject.next(mapper)
-      this.audioService.setAudio(mapper.find((track) => track.previewURL))
+      this.audioService.setAudio(mapper.find((track:Track) => track.previewURL))
       return mapper
     })).subscribe((val) => {
     })

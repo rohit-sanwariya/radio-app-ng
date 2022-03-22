@@ -181,6 +181,9 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
     if(this.router.url==='/'){
       this.state$.subscribe(val=>{
+        if(!val.AudioType){
+          this.currentContent = RadioList
+        }
         let currentIdx = this.currentContent.findIndex((track:any)=>track.src === val.src )
         currentIdx++
           if(currentIdx<end){
@@ -197,8 +200,6 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
           }
           else{
-
-
             const track = {
               previewURL:this.currentContent[0].src,
               name:this.currentContent[0].title,
@@ -237,6 +238,41 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
     const end:number = this.currentContent.length
     if(this.router.url==='/'){
+      this.state$.subscribe(val=>{
+        if(!val.AudioType){
+          this.currentContent = RadioList
+        }
+        let currentIdx = this.currentContent.findIndex((track:any)=>track.src === val.src )
+        currentIdx--
+          if(currentIdx<end){
+
+            const track = {
+              previewURL:this.currentContent[currentIdx].src,
+              name:this.currentContent[currentIdx].title,
+              idx:currentIdx,
+              duration:currentIdx,
+              artistName:this.currentContent[currentIdx].artist,
+              pfw:"Home",
+            }
+            this.service.setAudio(track)
+
+          }
+          else{
+            const track = {
+              previewURL:this.currentContent[0].src,
+              name:this.currentContent[0].title,
+              idx:0,
+              duration:0,
+              artistName:this.currentContent[0].artist,
+              pfw:"Home",
+            }
+            // console.log(track);
+
+            this.service.setAudio(track)
+          }
+
+
+        })
 
     }
     else{

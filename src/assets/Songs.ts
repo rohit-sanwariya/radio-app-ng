@@ -1,3 +1,5 @@
+import { Track } from "src/app/Interfaces/track"
+
 export const RadioList = [
   { title: 'Radio Singham Indore India', src: 'http://node-02.zeno.fm/2vhb00mhky8uv?listening-from-radio-garden=1646469495&rj-tok=AAABf1lD4SwArKBuP6_PQN_O7Q&rj-ttl=5',artist:'' },
   { title: '92.7 Hindi', src: 'http://sc-bb.1.fm:8017/;?listening-from-radio-garden=1577267733065',artist:'' },
