@@ -27,11 +27,11 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   showVR: boolean = false
   audioList = [SongList, RadioList]
   constructor(private router: Router,
-
               private renderer: Renderer2,
               public service: AudioPlayerService,
               private spotifyService: SpotifyService,
-              private timeService: TimeFormattingService)
+
+              )
                {
     this.state$ = this.service.getState()
 
@@ -43,8 +43,15 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       // this.service.setCurrentTime(this.audioElement.nativeElement.currentTime)
 
     })
+    this.spotifyService.getPlaylist().subscribe((playlists:any)=>{
+      this.currentContent = playlists
+      console.log(playlists);
+
+    })
     this.renderer.listen(this.audioElement.nativeElement, 'ended', (event) => {
       console.log(this.currentContent);
+
+
       const currentSongSrc = this.audioElement.nativeElement.src
       let currentTrackIdx = this.currentContent.findIndex((track:any)=>track.previewURL===currentSongSrc)+1
 
@@ -55,6 +62,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       this.service.setIsPlaying(true)
       this.service.setIdx(currentTrackIdx)
         this.spotifyService.setCurrentTrack(this.currentContent[currentTrackIdx],true)
+        this.playSong('here')
       }
       else{
         this.audioElement.nativeElement.autoplay = false
@@ -87,13 +95,22 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
       // console.log(this.audioType);
       console.log(this.audioType);
+      this.spotifyService.getArtistContent().tracks.subscribe((content)=>{
+        this.currentContent = content;
+      })
 
+     if(this.router.url==='/'){
       this.service.getcurrentContentSubject().subscribe((content)=>{
 
         this.currentContent = content;
+        console.log('setting the cotent....');
+
 
       })
+     }
     const onHome = this.router.url==='/'
+
+
     if(onHome){
       const track = {
         previewURL:SongList[0].src,
@@ -115,13 +132,16 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
       }
 
     }
+    console.log(this.router.url);
 
 
+   if(this.router.url==='/spotify'){
     this.spotifyService.getPlaylist().subscribe((playlist) => {
-     this.currentContent = playlist
-     this.service.setCurrentContentSubject(this.currentContent)
+      this.currentContent = playlist
+      this.service.setCurrentContentSubject(this.currentContent)
 
-    })
+     })
+   }
     this.service.getSubject().subscribe((val) => {
       this.audioElement.nativeElement.autoplay = true
       this.playSong('fromList')
@@ -171,6 +191,8 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
 
 
   playSong(playedFrom: string) {
+    console.log(playedFrom);
+
     this.service.play(this.audioElement.nativeElement, playedFrom)
   }
   playNext() {
@@ -187,12 +209,12 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
         let currentIdx = this.currentContent.findIndex((track:any)=>track.src === val.src )
         currentIdx++
           if(currentIdx<end){
-
+console.log('i am the promblem')
             const track = {
               previewURL:this.currentContent[currentIdx].src,
               name:this.currentContent[currentIdx].title,
               idx:currentIdx,
-              duration:currentIdx,
+              duration:0,
               artistName:this.currentContent[currentIdx].artist,
               pfw:"Home",
             }
@@ -258,6 +280,7 @@ export class AudioPlayerComponent implements OnInit, AfterViewInit {
           else{
             console.log('hello');
             this.audioElement.nativeElement.pause()
+            this.audioElement.nativeElement.currentTime = 0;
             this.rangeVal = 0
             const track = {
               previewURL:this.currentContent[0].src,

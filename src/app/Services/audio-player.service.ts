@@ -165,7 +165,7 @@ export class AudioPlayerService implements OnInit,AfterViewInit {
     if(!type){
       this.currentContent = this.radioList
     }
-    else if(type){
+    else if(type && !(this.router.url.split('/').includes('artist') || this.router.url.split('/').includes('album'))){
       this.currentContent = this.songList
     }
   }

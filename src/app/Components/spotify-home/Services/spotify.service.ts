@@ -284,7 +284,6 @@ export class SpotifyService implements OnInit {
 
   }
   getPlaylist() {
-
     return this.subject
   }
 
